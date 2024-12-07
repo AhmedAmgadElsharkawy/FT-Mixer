@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget,QHBoxLayout,QVBoxLayout,QLabel,QRadioButton,QButtonGroup,QComboBox,QSlider,QSizePolicy,QFrame
+from PyQt5.QtWidgets import QWidget,QHBoxLayout,QVBoxLayout,QLabel,QRadioButton,QButtonGroup,QComboBox,QSlider,QSizePolicy,QGroupBox
 from PyQt5.QtCore import Qt
 import pyqtgraph as pg
 
@@ -10,7 +10,6 @@ class Component(QWidget):
         self.component_main_widget = QWidget()
         self.component_main_widget_layout = QVBoxLayout(self.component_main_widget)
         self.component_main_widget.setObjectName("component_main_widget")
-        self.central_widget_layout.setContentsMargins(0,0,0,0)
         
         self.central_widget_layout.addWidget(self.component_main_widget)
         self.header_widget = QWidget()
@@ -38,7 +37,7 @@ class Component(QWidget):
         self.slider_container_layout.addWidget(self.component_slider)
         self.slider_container_layout.addSpacing(25)
         self.slider_container_layout.addWidget(self.component_slider_label)
-        self.component_slider.setFixedWidth(270)
+        self.component_slider.setFixedWidth(250)
         self.component_slider.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
 
@@ -48,7 +47,8 @@ class Component(QWidget):
                            padding:0px;
                            }
                            #component_main_widget{
-                            border-bottom: 1px solid gray;
+                            border: 1px solid gray;
+                           border-radius:7px;
                            }
                            """)
 
@@ -59,9 +59,9 @@ class OutputPort(QWidget):
         self.central_layout = QVBoxLayout(self)
         self.central_layout.setContentsMargins(0,0,0,0)
         self.main_widget = QWidget()
-        self.main_widget.setContentsMargins(0,0,0,0)
         self.main_widget.setObjectName("main_widget")
         self.main_widget_layout = QVBoxLayout(self.main_widget)
+        self.main_widget_layout.setContentsMargins(0,0,0,0)
         self.central_layout.addWidget(self.main_widget)
         self.main_widget.setFixedWidth(350)
 
@@ -120,10 +120,6 @@ class OutputPort(QWidget):
             *{
                 padding:0px;
                 margin:0px;
-            }
-            #main_widget{
-                border:1px solid gray;
-                border-radius:10px;
             }
             #choose_mode_widget{
                 border:1px solid gray;

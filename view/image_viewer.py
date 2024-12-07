@@ -40,6 +40,7 @@ class ImageViewer(QWidget):
 
         self.viwers_widget = QWidget()
         self.viwers_widget_layout = QHBoxLayout(self.viwers_widget)
+        self.viwers_widget_layout.setContentsMargins(0,0,0,0)
         self.main_widget_layout.addWidget(self.viwers_widget)
 
         self.image_view_widget = CustomImageView(self.double_click_image_handler)
@@ -54,15 +55,25 @@ class ImageViewer(QWidget):
         self.image_controls_widget = QWidget()
         self.image_controls_widget.setObjectName("image_controls_widget")
         self.image_controls_widget_layout = QVBoxLayout(self.image_controls_widget)
+        self.image_controls_widget_layout.setContentsMargins(0,0,0,0)
         self.main_widget_layout.addWidget(self.image_controls_widget)
+
+        self.component_combobox_container = QWidget()
+        self.component_combobox_container.setObjectName("component_combobox_container")
+        self.component_combobox_container_layout = QHBoxLayout(self.component_combobox_container)
+        # self.component_combobox_container_layout.setContentsMargins(0,0,0,0)
+        self.image_controls_widget_layout.addWidget(self.component_combobox_container)
         ft_components_options = ["FT Magnitude", "FT Phase", "FT Real", "FT Imaginary"]
         self.ft_components_combobox = QComboBox()
         self.ft_components_combobox.addItems(ft_components_options)
-        self.image_controls_widget_layout.addWidget(self.ft_components_combobox)
+        self.component_combobox_label = QLabel("Choose FT Component") 
+        self.component_combobox_container_layout.addWidget(self.component_combobox_label)
+        self.component_combobox_container_layout.addWidget(self.ft_components_combobox)
 
         self.sliders_widget = QWidget()
-        self.sliders_widget_layout = QVBoxLayout(self.sliders_widget) 
-        self.sliders_widget_layout.setContentsMargins(0, 0, 0, 0)
+        self.sliders_widget.setObjectName("sliders_widget")
+        self.sliders_widget_layout = QHBoxLayout(self.sliders_widget) 
+        # self.sliders_widget_layout.setContentsMargins(0, 0, 0, 0)
         self.image_controls_widget_layout.addWidget(self.sliders_widget)
 
 
@@ -82,7 +93,7 @@ class ImageViewer(QWidget):
         self.brightness_control_widget_layout.addWidget(self.brightness_label)
         self.brightness_control_widget_layout.addStretch()
         self.brightness_control_widget_layout.addWidget(self.brightness_slider)
-        self.brightness_slider.setFixedWidth(450)
+        self.brightness_slider.setFixedWidth(150)
         
         self.contrast_label = QLabel("Contrast")
         self.contrast_slider = QSlider(Qt.Horizontal)
@@ -91,7 +102,7 @@ class ImageViewer(QWidget):
         self.contrast_control_widget_layout.addWidget(self.contrast_label)
         self.contrast_control_widget_layout.addStretch()
         self.contrast_control_widget_layout.addWidget(self.contrast_slider)
-        self.contrast_slider.setFixedWidth(450)
+        self.contrast_slider.setFixedWidth(150)
         
         self.image_viewer_controller = ImageViewerController(self)
         
@@ -104,10 +115,13 @@ class ImageViewer(QWidget):
                 border:1px solid gray;
                 border-radius:10px;
                            }
-            #image_controls_widget{
+                #component_combobox_container{
                      border:1px solid gray;
-                border-radius:10px;    
-                           padding:0px;  
+                border-radius:5px;      
+                           }
+                #sliders_widget{
+                        border:1px solid gray;
+                border-radius:5px;   
                            }
         """)
     
