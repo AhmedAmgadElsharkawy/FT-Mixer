@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QWidget,QHBoxLayout,QVBoxLayout,QComboBox,QSlider,QLabel
 import pyqtgraph as pg
 from PyQt5.QtCore import Qt
+from controller.image_viewer_controller import ImageViewerController
 
 
 
@@ -27,15 +28,16 @@ class CustomFTViewer(pg.ImageView):
         
 
 class ImageViewer(QWidget):
-    def __init__(self,main_window,image_obejct):
+    def __init__(self,main_window,image_object):
         super().__init__()
         self.main_window = main_window
+        self.image_object = image_object
         self.central_layout = QHBoxLayout(self)
         self.main_widget = QWidget()      
         self.main_widget_layout = QHBoxLayout(self.main_widget)
         self.central_layout.addWidget(self.main_widget)
 
-        self.image_view_widget = CustomImageView(image_obejct)
+        self.image_view_widget = CustomImageView(self.image_object)
         self.main_widget_layout.addWidget(self.image_view_widget)
 
 
@@ -47,7 +49,7 @@ class ImageViewer(QWidget):
         self.image_controls_widget = QWidget()
         self.image_controls_widget_layout = QVBoxLayout(self.image_controls_widget)
         self.main_widget_layout.addWidget(self.image_controls_widget)
-        ft_components_options = ["FT Magnitude", "FT Phase", "FT Real Components", "FT Imaginary Components"]
+        ft_components_options = ["FT Magnitude", "FT Phase", "FT Real", "FT Imaginary"]
         self.ft_components_combobox = QComboBox()
         self.ft_components_combobox.addItems(ft_components_options)
         self.image_controls_widget_layout.addWidget(self.ft_components_combobox)
@@ -72,7 +74,9 @@ class ImageViewer(QWidget):
         self.contrast_slider.setValue(100)  
         self.contrast_control_widget_layout.addWidget(self.contrast_label)
         self.contrast_control_widget_layout.addWidget(self.contrast_slider)
-        
+
+        self.image_viewer_controller = ImageViewerController(self)
+        self.ft_components_combobox.currentIndexChanged.connect(self.image_viewer_controller.select_ft_component)
         
         
 
