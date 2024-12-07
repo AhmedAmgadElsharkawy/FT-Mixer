@@ -14,6 +14,7 @@ class MainWindow(QMainWindow):
         self.main_widget = QWidget(self)
         self.setCentralWidget(self.main_widget)
         self.main_layout = QHBoxLayout(self.main_widget)
+        self.main_layout.setSpacing(20)
 
 
         self.images_viewers_widget = QWidget()
@@ -46,6 +47,5 @@ class MainWindow(QMainWindow):
                 padding:0px;
                 margin:0px;
             }
-            
         """)
         

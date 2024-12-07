@@ -3,6 +3,8 @@
 class ImageViewerController():
     def __init__(self,image_viewer):
         self.image_viewer = image_viewer
+        self.image_viewer.ft_components_combobox.currentIndexChanged.connect(self.select_ft_component)
+
 
     def plot_image(self):
         # height, width = self.imgByte.shape

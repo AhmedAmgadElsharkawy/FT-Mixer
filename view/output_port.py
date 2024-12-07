@@ -1,8 +1,55 @@
-from PyQt5.QtWidgets import QWidget,QHBoxLayout,QVBoxLayout,QLabel,QRadioButton,QButtonGroup
+from PyQt5.QtWidgets import QWidget,QHBoxLayout,QVBoxLayout,QLabel,QRadioButton,QButtonGroup,QComboBox,QSlider,QSizePolicy,QFrame
 from PyQt5.QtCore import Qt
 import pyqtgraph as pg
 
 
+class Component(QWidget):
+    def __init__(self,header):
+        super().__init__()
+        self.central_widget_layout  = QVBoxLayout(self)
+        self.component_main_widget = QWidget()
+        self.component_main_widget_layout = QVBoxLayout(self.component_main_widget)
+        self.component_main_widget.setObjectName("component_main_widget")
+        self.central_widget_layout.setContentsMargins(0,0,0,0)
+        
+        self.central_widget_layout.addWidget(self.component_main_widget)
+        self.header_widget = QWidget()
+        self.header_widget_layout = QHBoxLayout(self.header_widget)
+        self.header_widget_layout.setContentsMargins(0,0,0,0)
+        self.header_label = QLabel(header)
+        self.component_combobox = QComboBox()
+        self.component_combobox.addItems(["Magnitude","Phase"])
+        self.header_widget_layout.addWidget(self.header_label)
+        self.header_widget_layout.addWidget(self.component_combobox)
+        self.component_main_widget_layout.addWidget(self.header_widget)
+        
+        self.slider_container = QWidget()
+        self.slider_container.setContentsMargins(0,0,0,0)
+        self.slider_container_layout = QHBoxLayout(self.slider_container)
+        self.slider_container_layout.setContentsMargins(0,0,0,0)
+        self.component_main_widget_layout.addWidget(self.slider_container)
+        
+        
+        self.component_slider = QSlider(Qt.Horizontal)
+        self.component_slider_label = QLabel("0%")
+        self.component_slider.setRange(0,100)
+        self.component_slider.setValue(0) 
+        
+        self.slider_container_layout.addWidget(self.component_slider_label)
+        self.slider_container_layout.addWidget(self.component_slider)
+        self.component_slider.setFixedWidth(250)
+        self.component_slider.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+
+
+        self.setStyleSheet("""
+                            *{
+                           margin:0px;
+                           padding:0px;
+                           }
+                           #component_main_widget{
+                            border-bottom: 1px solid gray;
+                           }
+                           """)
 
 class OutputPort(QWidget):
     def __init__(self,main_window):
@@ -11,6 +58,7 @@ class OutputPort(QWidget):
         self.central_layout = QVBoxLayout(self)
         self.central_layout.setContentsMargins(0,0,0,0)
         self.main_widget = QWidget()
+        self.main_widget.setContentsMargins(0,0,0,0)
         self.main_widget.setObjectName("main_widget")
         self.main_widget_layout = QVBoxLayout(self.main_widget)
         self.central_layout.addWidget(self.main_widget)
@@ -20,7 +68,9 @@ class OutputPort(QWidget):
         self.output_viwer.ui.histogram.hide() 
         self.output_viwer.ui.roiBtn.hide()    
         self.output_viwer.ui.menuBtn.hide()
+        self.output_viwer.setFixedHeight(350)
         self.main_widget_layout.addWidget(self.output_viwer)
+        self.main_widget_layout.addStretch()
 
         self.choose_mode_widget = QWidget()
         self.choose_mode_widget.setObjectName("choose_mode_widget")
@@ -43,6 +93,25 @@ class OutputPort(QWidget):
 
         self.magnitude_and_phase_radio.setChecked(True)
 
+        self.components_widget = QWidget()
+        self.components_widget.setObjectName("components_widget")
+        self.components_widget_layout = QVBoxLayout(self.components_widget)
+        self.components_widget_layout.setContentsMargins(0,0,0,0)
+        self.main_widget_layout.addWidget(self.components_widget)
+        
+
+
+        self.component1 = Component("componen1")
+        self.component2 = Component("componen2")
+        self.component3 = Component("componen3")
+        self.component4 = Component("componen4")
+        
+        self.components_widget_layout.addWidget(self.component1)
+        self.components_widget_layout.addWidget(self.component2)
+        self.components_widget_layout.addWidget(self.component3)
+        self.components_widget_layout.addWidget(self.component4)
+        
+
         # self.choose_mode_radio_buttons_group.buttonClicked.connect(self.update_status)
         
         self.setStyleSheet("""
@@ -52,11 +121,15 @@ class OutputPort(QWidget):
             }
             #main_widget{
                 border:1px solid gray;
-                border-radius:10px
+                border-radius:10px;
             }
             #choose_mode_widget{
                 border:1px solid gray;
-                border-radius:7px
+                border-radius:7px;
             }
+            #components_widget{
+                 border:1px solid gray;
+                border-radius:7px;          
+                }
         """)
         
