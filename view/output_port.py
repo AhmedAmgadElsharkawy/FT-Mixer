@@ -7,4 +7,3 @@ class OutputPort(QWidget):
         super().__init__()
         self.main_window = main_window
         
-        
