@@ -80,14 +80,18 @@ class ImageViewer(QWidget):
         self.brightness_slider.setRange(-100, 100) 
         self.brightness_slider.setValue(0) 
         self.brightness_control_widget_layout.addWidget(self.brightness_label)
+        self.brightness_control_widget_layout.addStretch()
         self.brightness_control_widget_layout.addWidget(self.brightness_slider)
+        self.brightness_slider.setFixedWidth(450)
         
         self.contrast_label = QLabel("Contrast")
         self.contrast_slider = QSlider(Qt.Horizontal)
         self.contrast_slider.setRange(1, 500)  
         self.contrast_slider.setValue(100)  
         self.contrast_control_widget_layout.addWidget(self.contrast_label)
+        self.contrast_control_widget_layout.addStretch()
         self.contrast_control_widget_layout.addWidget(self.contrast_slider)
+        self.contrast_slider.setFixedWidth(450)
         
         self.image_viewer_controller = ImageViewerController(self)
         

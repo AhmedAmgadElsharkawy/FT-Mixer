@@ -35,9 +35,10 @@ class Component(QWidget):
         self.component_slider.setRange(0,100)
         self.component_slider.setValue(0) 
         
-        self.slider_container_layout.addWidget(self.component_slider_label)
         self.slider_container_layout.addWidget(self.component_slider)
-        self.component_slider.setFixedWidth(250)
+        self.slider_container_layout.addSpacing(25)
+        self.slider_container_layout.addWidget(self.component_slider_label)
+        self.component_slider.setFixedWidth(270)
         self.component_slider.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
 
@@ -70,9 +71,10 @@ class OutputPort(QWidget):
         self.output_viwer.ui.menuBtn.hide()
         self.output_viwer.setFixedHeight(350)
         self.main_widget_layout.addWidget(self.output_viwer)
-        self.main_widget_layout.addStretch()
+        # self.main_widget_layout.addStretch()
 
         self.choose_mode_widget = QWidget()
+        self.choose_mode_widget.setFixedHeight(50)
         self.choose_mode_widget.setObjectName("choose_mode_widget")
         self.choose_mode_widget_layout = QHBoxLayout(self.choose_mode_widget)
         self.main_widget_layout.addWidget(self.choose_mode_widget)
