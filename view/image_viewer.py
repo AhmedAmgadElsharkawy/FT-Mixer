@@ -8,9 +8,22 @@ class CustomImageView(pg.ImageView):
     def __init__(self, image_object):
         super().__init__()
         self.image_object = image_object
+        self.ui.histogram.hide() 
+        self.ui.roiBtn.hide()    
+        self.ui.menuBtn.hide()
 
     def mouseDoubleClickEvent(self, event):
         self.image_object.load_image(self)
+
+class CustomFTViewer(pg.ImageView):
+    def __init__(self):
+        super().__init__()
+        self.ft_roi = pg.ROI(pos = self.getView().viewRect().center(), size = (300, 300), hoverPen='b', resizable= True, invertible= True, rotatable= False)
+        self.addItem(self.ft_roi)
+        self.ui.histogram.hide() 
+        self.ui.roiBtn.hide()    
+        self.ui.menuBtn.hide()
+
         
 
 class ImageViewer(QWidget):
@@ -23,10 +36,13 @@ class ImageViewer(QWidget):
         self.central_layout.addWidget(self.main_widget)
 
         self.image_view_widget = CustomImageView(image_obejct)
-        self.image_view_widget.ui.histogram.hide() 
-        self.image_view_widget.ui.roiBtn.hide()    
-        self.image_view_widget.ui.menuBtn.hide()
         self.main_widget_layout.addWidget(self.image_view_widget)
+
+
+        self.ft_viewer = CustomFTViewer()
+        self.main_widget_layout.addWidget(self.ft_viewer)
+
+
 
         self.image_controls_widget = QWidget()
         self.image_controls_widget_layout = QVBoxLayout(self.image_controls_widget)
