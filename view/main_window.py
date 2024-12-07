@@ -10,19 +10,21 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.image_obejcts = [ImageModel(),ImageModel(),ImageModel(),ImageModel()]
         self.setWindowTitle('FT-Mixer')
-        self.setGeometry(50, 50, 1800, 950)
+        self.setGeometry(20, 50, 1900, 950)
         self.main_widget = QWidget(self)
         self.setCentralWidget(self.main_widget)
         self.main_layout = QHBoxLayout(self.main_widget)
 
 
         self.images_viewers_widget = QWidget()
+        self.images_viewers_widget.setObjectName("images_viewers_widget")
         self.images_viewers_widget_layout = QGridLayout(self.images_viewers_widget)
         
         self.image_viewer1 = ImageViewer(self,self.image_obejcts[0])
         self.image_viewer2 = ImageViewer(self,self.image_obejcts[1])
         self.image_viewer3 = ImageViewer(self,self.image_obejcts[2])
         self.image_viewer4 = ImageViewer(self,self.image_obejcts[3])
+
 
         self.images_viewers_widget_layout.addWidget(self.image_viewer1,0,0)
         self.images_viewers_widget_layout.addWidget(self.image_viewer2,0,1)

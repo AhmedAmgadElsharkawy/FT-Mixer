@@ -34,17 +34,22 @@ class ImageViewer(QWidget):
         self.image_viewer_controller = ImageViewerController(self)
         self.main_window = main_window
         self.image_object = image_object
-        self.central_layout = QHBoxLayout(self)
-        self.main_widget = QWidget()      
-        self.main_widget_layout = QHBoxLayout(self.main_widget)
+        self.central_layout = QVBoxLayout(self)
+        self.main_widget = QWidget()
+        self.main_widget.setObjectName("main_widget")
+        self.main_widget_layout = QVBoxLayout(self.main_widget)
         self.central_layout.addWidget(self.main_widget)
 
+        self.viwers_widget = QWidget()
+        self.viwers_widget_layout = QHBoxLayout(self.viwers_widget)
+        self.main_widget_layout.addWidget(self.viwers_widget)
+
         self.image_view_widget = CustomImageView(self.image_viewer_controller,self.image_object)
-        self.main_widget_layout.addWidget(self.image_view_widget)
+        self.viwers_widget_layout.addWidget(self.image_view_widget)
 
 
         self.ft_viewer = CustomFTViewer()
-        self.main_widget_layout.addWidget(self.ft_viewer)
+        self.viwers_widget_layout.addWidget(self.ft_viewer)
 
 
 
@@ -57,26 +62,26 @@ class ImageViewer(QWidget):
         self.image_controls_widget_layout.addWidget(self.ft_components_combobox)
 
         self.sliders_widget = QWidget()
-        self.sliders_widget_layout = QHBoxLayout(self.sliders_widget) 
+        self.sliders_widget_layout = QVBoxLayout(self.sliders_widget) 
         self.image_controls_widget_layout.addWidget(self.sliders_widget)
 
 
         self.brightness_control_widget = QWidget()
-        self.brightness_control_widget_layout = QVBoxLayout(self.brightness_control_widget)
+        self.brightness_control_widget_layout = QHBoxLayout(self.brightness_control_widget)
         self.contrast_control_widget = QWidget()
-        self.contrast_control_widget_layout = QVBoxLayout(self.contrast_control_widget)
+        self.contrast_control_widget_layout = QHBoxLayout(self.contrast_control_widget)
         self.sliders_widget_layout.addWidget(self.brightness_control_widget)
         self.sliders_widget_layout.addWidget(self.contrast_control_widget)
 
         self.brightness_label = QLabel("Brightness")
-        self.brightness_slider = QSlider()
+        self.brightness_slider = QSlider(Qt.Horizontal)
         self.brightness_slider.setRange(-100, 100) 
         self.brightness_slider.setValue(0) 
         self.brightness_control_widget_layout.addWidget(self.brightness_label)
         self.brightness_control_widget_layout.addWidget(self.brightness_slider)
         
         self.contrast_label = QLabel("Contrast")
-        self.contrast_slider = QSlider()
+        self.contrast_slider = QSlider(Qt.Horizontal)
         self.contrast_slider.setRange(1, 500)  
         self.contrast_slider.setValue(100)  
         self.contrast_control_widget_layout.addWidget(self.contrast_label)
@@ -84,7 +89,17 @@ class ImageViewer(QWidget):
 
         self.ft_components_combobox.currentIndexChanged.connect(self.image_viewer_controller.select_ft_component)
         
-        
+        self.setStyleSheet("""
+            *{
+                padding:0px;
+                margin:0px;
+            }
+            #main_widget{
+                border:1px solid gray;
+                border-radius:10px;
+                           }
+        """)
+
 
         
         
