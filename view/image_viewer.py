@@ -6,15 +6,18 @@ from controller.image_viewer_controller import ImageViewerController
 
 
 class CustomImageView(pg.ImageView):
-    def __init__(self, image_object):
+    def __init__(self, image_viewer_controller,image_object):
         super().__init__()
+        self.image_viewer_controller = image_viewer_controller
         self.image_object = image_object
         self.ui.histogram.hide() 
         self.ui.roiBtn.hide()    
         self.ui.menuBtn.hide()
 
     def mouseDoubleClickEvent(self, event):
-        self.image_object.load_image(self)
+        self.image_object.load_image()
+        if self.image_object.imgPath:
+            self.image_viewer_controller.plot_image()
 
 class CustomFTViewer(pg.ImageView):
     def __init__(self):
@@ -24,12 +27,11 @@ class CustomFTViewer(pg.ImageView):
         self.ui.histogram.hide() 
         self.ui.roiBtn.hide()    
         self.ui.menuBtn.hide()
-
         
-
 class ImageViewer(QWidget):
     def __init__(self,main_window,image_object):
         super().__init__()
+        self.image_viewer_controller = ImageViewerController(self)
         self.main_window = main_window
         self.image_object = image_object
         self.central_layout = QHBoxLayout(self)
@@ -37,7 +39,7 @@ class ImageViewer(QWidget):
         self.main_widget_layout = QHBoxLayout(self.main_widget)
         self.central_layout.addWidget(self.main_widget)
 
-        self.image_view_widget = CustomImageView(self.image_object)
+        self.image_view_widget = CustomImageView(self.image_viewer_controller,self.image_object)
         self.main_widget_layout.addWidget(self.image_view_widget)
 
 
@@ -75,7 +77,6 @@ class ImageViewer(QWidget):
         self.contrast_control_widget_layout.addWidget(self.contrast_label)
         self.contrast_control_widget_layout.addWidget(self.contrast_slider)
 
-        self.image_viewer_controller = ImageViewerController(self)
         self.ft_components_combobox.currentIndexChanged.connect(self.image_viewer_controller.select_ft_component)
         
         

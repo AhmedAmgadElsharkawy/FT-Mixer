@@ -42,13 +42,11 @@ class ImageModel():
         self.realPlot = 20 * np.log(np.real(self.fShift))
         self.imaginaryPlot = np.imag(self.fShift)
 
-    def load_image(self,image_view_widget):
+    def load_image(self):
             filename, format = QFileDialog.getOpenFileName(None, "Load Image","*.jpg;;" "*.jpeg;;" "*.png;;")
             if filename:
                 self.image_process(filename)
-                # height, width = self.imgByte.shape
-                # image_view_widget.getView().setLimits(xMin=0, xMax=width, yMin=0, yMax=height)
-                image_view_widget.setImage(self.imgByte)
+
 
 
 
