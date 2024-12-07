@@ -48,6 +48,7 @@ class ImageViewer(QWidget):
 
 
         self.ft_viewer = CustomFTViewer()
+        self.ft_viewer.setObjectName("ft_viewer")
         self.viwers_widget_layout.addWidget(self.ft_viewer)
 
 
@@ -107,10 +108,6 @@ class ImageViewer(QWidget):
         self.image_viewer_controller = ImageViewerController(self)
         
         self.setStyleSheet("""
-            *{
-                padding:0px;
-                margin:0px;
-            }
             #main_widget{
                 border:1px solid gray;
                 border-radius:10px;
@@ -122,7 +119,7 @@ class ImageViewer(QWidget):
                 #sliders_widget{
                         border:1px solid gray;
                 border-radius:5px;   
-                           }
+                        }
         """)
     
     def double_click_image_handler(self):

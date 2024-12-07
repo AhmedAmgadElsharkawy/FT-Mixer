@@ -42,10 +42,6 @@ class Component(QWidget):
 
 
         self.setStyleSheet("""
-                            *{
-                           margin:0px;
-                           padding:0px;
-                           }
                            #component_main_widget{
                             border: 1px solid gray;
                            border-radius:7px;
@@ -117,10 +113,6 @@ class OutputPort(QWidget):
         # self.choose_mode_radio_buttons_group.buttonClicked.connect(self.update_status)
         
         self.setStyleSheet("""
-            *{
-                padding:0px;
-                margin:0px;
-            }
             #choose_mode_widget{
                 border:1px solid gray;
                 border-radius:7px;
