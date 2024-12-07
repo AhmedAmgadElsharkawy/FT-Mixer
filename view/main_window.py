@@ -19,6 +19,8 @@ class MainWindow(QMainWindow):
         self.images_viewers_widget = QWidget()
         self.images_viewers_widget.setObjectName("images_viewers_widget")
         self.images_viewers_widget_layout = QGridLayout(self.images_viewers_widget)
+        self.images_viewers_widget_layout.setContentsMargins(0,0,0,0)
+        
         
         self.image_viewer1 = ImageViewer(self,self.image_obejcts[0])
         self.image_viewer2 = ImageViewer(self,self.image_obejcts[1])
@@ -44,9 +46,6 @@ class MainWindow(QMainWindow):
                 padding:0px;
                 margin:0px;
             }
-            #images_viewers_widget{
-                border:1px solid gray;    
-                border-radius:10px;        
-            }
+            
         """)
         

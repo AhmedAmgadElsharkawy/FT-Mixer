@@ -9,6 +9,7 @@ class OutputPort(QWidget):
         super().__init__()
         self.main_window = main_window
         self.central_layout = QVBoxLayout(self)
+        self.central_layout.setContentsMargins(0,0,0,0)
         self.main_widget = QWidget()
         self.main_widget.setObjectName("main_widget")
         self.main_widget_layout = QVBoxLayout(self.main_widget)

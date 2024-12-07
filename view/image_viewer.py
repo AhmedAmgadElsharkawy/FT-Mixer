@@ -35,6 +35,7 @@ class ImageViewer(QWidget):
         self.main_window = main_window
         self.image_object = image_object
         self.central_layout = QVBoxLayout(self)
+        self.central_layout.setContentsMargins(0,0,0,0)
         self.main_widget = QWidget()
         self.main_widget.setObjectName("main_widget")
         self.main_widget_layout = QVBoxLayout(self.main_widget)
@@ -54,6 +55,7 @@ class ImageViewer(QWidget):
 
 
         self.image_controls_widget = QWidget()
+        self.image_controls_widget.setObjectName("image_controls_widget")
         self.image_controls_widget_layout = QVBoxLayout(self.image_controls_widget)
         self.main_widget_layout.addWidget(self.image_controls_widget)
         ft_components_options = ["FT Magnitude", "FT Phase", "FT Real", "FT Imaginary"]
@@ -63,13 +65,16 @@ class ImageViewer(QWidget):
 
         self.sliders_widget = QWidget()
         self.sliders_widget_layout = QVBoxLayout(self.sliders_widget) 
+        self.sliders_widget_layout.setContentsMargins(0, 0, 0, 0)
         self.image_controls_widget_layout.addWidget(self.sliders_widget)
 
 
         self.brightness_control_widget = QWidget()
         self.brightness_control_widget_layout = QHBoxLayout(self.brightness_control_widget)
+        self.brightness_control_widget_layout.setContentsMargins(0,0,0,0)
         self.contrast_control_widget = QWidget()
         self.contrast_control_widget_layout = QHBoxLayout(self.contrast_control_widget)
+        self.contrast_control_widget_layout.setContentsMargins(0,0,0,0)
         self.sliders_widget_layout.addWidget(self.brightness_control_widget)
         self.sliders_widget_layout.addWidget(self.contrast_control_widget)
 
@@ -98,6 +103,12 @@ class ImageViewer(QWidget):
                 border:1px solid gray;
                 border-radius:10px;
                            }
+            #image_controls_widget{
+                     border:1px solid gray;
+                border-radius:10px;    
+                           padding:0px;  
+                           }
+           
         """)
 
 
