@@ -47,7 +47,6 @@ class ImageViewerController():
         if self.image_viewer.image_object.imgPath is not None:
             alpha_value = self.image_viewer.contrast_slider.value()
             beta = self.image_viewer.brightness_slider.value()
-            print(alpha_value, beta)
             alpha = alpha_value / 100.0
 
             contrasted_image = cv2.convertScaleAbs(self.image_viewer.image_object.imgByte, alpha=alpha, beta=beta)

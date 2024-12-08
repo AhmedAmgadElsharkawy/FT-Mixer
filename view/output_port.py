@@ -1,11 +1,13 @@
 from PyQt5.QtWidgets import QWidget,QHBoxLayout,QVBoxLayout,QLabel,QRadioButton,QButtonGroup,QComboBox,QSlider,QSizePolicy,QGroupBox
 from PyQt5.QtCore import Qt
 import pyqtgraph as pg
+import numpy as np
 
 
 class Component(QWidget):
-    def __init__(self,header):
+    def __init__(self,header, output_port):
         super().__init__()
+        self.output_port = output_port
         self.central_widget_layout  = QVBoxLayout(self)
         self.component_main_widget = QWidget()
         self.component_main_widget_layout = QVBoxLayout(self.component_main_widget)
@@ -39,6 +41,7 @@ class Component(QWidget):
         self.slider_container_layout.addWidget(self.component_slider_label)
         self.component_slider.setFixedWidth(250)
         self.component_slider.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.component_slider.valueChanged.connect(self.slider_change)
 
 
         self.setStyleSheet("""
@@ -47,11 +50,29 @@ class Component(QWidget):
                            border-radius:7px;
                            }
                            """)
+        
+    def slider_change(self, value):
+        if self.output_port.magnitude_and_phase_radio.isChecked():
+            magnitudeSum = 0
+            phaseSum = 0
+            mask = np.ones(self.output_port.main_window.viewports[0].image_object.imgShape)
+            for i in range(4):
+                if self.output_port.components[i].component_combobox.currentText() == "Magnitude":
+                    magnitudeSum += self.output_port.components[i].component_slider.value() / 100 * np.abs(self.output_port.main_window.viewports[i].image_object.fShift)
+                else : 
+                    phaseSum += self.output_port.components[i].component_slider.value() / 100 * np.angle(self.output_port.main_window.viewports[i].image_object.fShift)
+            output =  np.clip(np.abs(np.fft.ifft2(((magnitudeSum*mask)*np.exp(1j * (phaseSum*mask))))),0,255)  
+            print(output)
+            self.output_port.output_viwer.setImage(output)
+        else :
+            pass
+
 
 class OutputPort(QWidget):
     def __init__(self,main_window):
         super().__init__()
         self.main_window = main_window
+        self.components = []
         self.central_layout = QVBoxLayout(self)
         self.central_layout.setContentsMargins(0,0,0,0)
         self.main_widget = QWidget()
@@ -99,10 +120,15 @@ class OutputPort(QWidget):
         
 
 
-        self.component1 = Component("componen1")
-        self.component2 = Component("componen2")
-        self.component3 = Component("componen3")
-        self.component4 = Component("componen4")
+        self.component1 = Component("component1", self)
+        self.component2 = Component("component2", self)
+        self.component3 = Component("component3", self)
+        self.component4 = Component("component4", self)
+
+        self.components.append(self.component1)
+        self.components.append(self.component2)
+        self.components.append(self.component3)
+        self.components.append(self.component4)
         
         self.components_widget_layout.addWidget(self.component1)
         self.components_widget_layout.addWidget(self.component2)

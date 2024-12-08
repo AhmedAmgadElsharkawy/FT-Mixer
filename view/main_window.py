@@ -40,10 +40,10 @@ class MainWindow(QMainWindow):
         self.image_viewer3.ft_viewer.sig_emitter.sig_ROI_changed.connect(lambda i=3, v=self.image_viewer3.ft_viewer: self.modify_all_regions(v.getRoi()))
         self.image_viewer4.ft_viewer.sig_emitter.sig_ROI_changed.connect(lambda i=4, v=self.image_viewer4.ft_viewer: self.modify_all_regions(v.getRoi()))
 
-        self.viewports.append(self.image_viewer1.ft_viewer)
-        self.viewports.append(self.image_viewer2.ft_viewer)
-        self.viewports.append(self.image_viewer3.ft_viewer)
-        self.viewports.append(self.image_viewer4.ft_viewer)
+        self.viewports.append(self.image_viewer1)
+        self.viewports.append(self.image_viewer2)
+        self.viewports.append(self.image_viewer3)
+        self.viewports.append(self.image_viewer4)
 
         self.images_viewers_widget_layout.addWidget(self.image_viewer1, 0, 0)
         self.images_viewers_widget_layout.addWidget(self.image_viewer2, 0, 1)
@@ -171,9 +171,9 @@ class MainWindow(QMainWindow):
     def modify_all_regions(self, roi: pg.ROI):
         new_state = roi.getState()
         for view in self.viewports:
-            if view.getRoi() is not roi:
-                view.getRoi().setState(new_state, update = False) # Set the state of the other views without sending update signal
-                view.getRoi().stateChanged(finish = False) # Update the views after changing without sending stateChangeFinished signal
-                view.region_update(view.getRoi(),finish = False)    
+            if view.ft_viewer.getRoi() is not roi:
+                view.ft_viewer.getRoi().setState(new_state, update = False) # Set the state of the other views without sending update signal
+                view.ft_viewer.getRoi().stateChanged(finish = False) # Update the views after changing without sending stateChangeFinished signal
+                view.ft_viewer.region_update(view.ft_viewer.getRoi(),finish = False)    
 
 
