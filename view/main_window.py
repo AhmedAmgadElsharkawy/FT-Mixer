@@ -3,11 +3,13 @@ from PyQt5.QtCore import Qt
 from view.image_viewer import ImageViewer
 from model.image_model import ImageModel
 from view.output_port import OutputPort
+import pyqtgraph as pg
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.viewports = []
         self.image_obejcts = [ImageModel(), ImageModel(), ImageModel(), ImageModel()]
         self.setWindowTitle('FT-Mixer')
         self.setGeometry(20, 50, 1900, 950)
@@ -32,6 +34,16 @@ class MainWindow(QMainWindow):
         self.image_viewer2 = ImageViewer(self, self.image_obejcts[1])
         self.image_viewer3 = ImageViewer(self, self.image_obejcts[2])
         self.image_viewer4 = ImageViewer(self, self.image_obejcts[3])
+
+        self.image_viewer1.ft_viewer.sig_emitter.sig_ROI_changed.connect(lambda i=1, v=self.image_viewer1.ft_viewer: self.modify_all_regions(v.getRoi()))
+        self.image_viewer2.ft_viewer.sig_emitter.sig_ROI_changed.connect(lambda i=2, v=self.image_viewer2.ft_viewer: self.modify_all_regions(v.getRoi()))
+        self.image_viewer3.ft_viewer.sig_emitter.sig_ROI_changed.connect(lambda i=3, v=self.image_viewer3.ft_viewer: self.modify_all_regions(v.getRoi()))
+        self.image_viewer4.ft_viewer.sig_emitter.sig_ROI_changed.connect(lambda i=4, v=self.image_viewer4.ft_viewer: self.modify_all_regions(v.getRoi()))
+
+        self.viewports.append(self.image_viewer1.ft_viewer)
+        self.viewports.append(self.image_viewer2.ft_viewer)
+        self.viewports.append(self.image_viewer3.ft_viewer)
+        self.viewports.append(self.image_viewer4.ft_viewer)
 
         self.images_viewers_widget_layout.addWidget(self.image_viewer1, 0, 0)
         self.images_viewers_widget_layout.addWidget(self.image_viewer2, 0, 1)
@@ -156,5 +168,12 @@ class MainWindow(QMainWindow):
             }
         """)
 
+    def modify_all_regions(self, roi: pg.ROI):
+        new_state = roi.getState()
+        for view in self.viewports:
+            if view.getRoi() is not roi:
+                view.getRoi().setState(new_state, update = False) # Set the state of the other views without sending update signal
+                view.getRoi().stateChanged(finish = False) # Update the views after changing without sending stateChangeFinished signal
+                view.region_update(view.getRoi(),finish = False)    
 
 
