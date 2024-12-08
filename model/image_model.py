@@ -31,7 +31,10 @@ class ImageModel():
         self.editedimgByte = self.imgByte.copy()
         self.contrastedimgByte = self.imgByte
         self.brightenedimgByte = self.imgByte
-        self.dft = np.fft.fft2(self.imgByte)
+        self.calculateFFT(self.imgByte)
+
+    def calculateFFT(self, img):
+        self.dft = np.fft.fft2(img)
         self.real = np.real(self.dft)
         self.imaginary = np.imag(self.dft)
         self.magnitude = np.abs(self.dft)

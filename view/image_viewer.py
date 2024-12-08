@@ -98,14 +98,15 @@ class ImageViewer(QWidget):
         
         self.contrast_label = QLabel("Contrast")
         self.contrast_slider = QSlider(Qt.Horizontal)
-        self.contrast_slider.setRange(1, 500)  
+        self.contrast_slider.setRange(1, 300)  
         self.contrast_slider.setValue(100)  
         self.contrast_control_widget_layout.addWidget(self.contrast_label)
         self.contrast_control_widget_layout.addStretch()
         self.contrast_control_widget_layout.addWidget(self.contrast_slider)
         self.contrast_slider.setFixedWidth(150)
-        
         self.image_viewer_controller = ImageViewerController(self)
+        self.contrast_slider.valueChanged.connect(self.image_viewer_controller.change_contrast_and_brightness)
+        self.brightness_slider.valueChanged.connect(self.image_viewer_controller.change_contrast_and_brightness)
         
         self.setStyleSheet("""
             #main_widget{
