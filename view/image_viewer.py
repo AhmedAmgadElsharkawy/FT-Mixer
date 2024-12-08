@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QWidget,QHBoxLayout,QVBoxLayout,QComboBox,QSlider,QL
 import pyqtgraph as pg
 from PyQt5.QtCore import Qt
 from controller.image_viewer_controller import ImageViewerController
+import numpy as np
 
 
 
@@ -20,11 +21,17 @@ class CustomImageView(pg.ImageView):
 class CustomFTViewer(pg.ImageView):
     def __init__(self):
         super().__init__()
-        self.ft_roi = pg.ROI(pos = self.getView().viewRect().center(), size = (300, 300), hoverPen='b', resizable= True, invertible= True, rotatable= False)
+        self.ft_roi = pg.ROI(pos = self.getView().viewRect().center(), size = (300, 300), hoverPen='r', resizable= True, invertible= True, rotatable= False)
         self.addItem(self.ft_roi)
+        self.add_scale_handles_ROI(self.ft_roi)
         self.ui.histogram.hide() 
         self.ui.roiBtn.hide()    
         self.ui.menuBtn.hide()
+
+    def add_scale_handles_ROI(self, roi : pg.ROI):
+        positions = np.array([[0,0], [1,0], [1,1], [0,1]])
+        for pos in positions:        
+            self.ft_roi.addScaleHandle(pos = pos, center = 1 - pos)
         
 class ImageViewer(QWidget):
     def __init__(self,main_window,image_object):
