@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QWidget,QHBoxLayout,QVBoxLayout,QLabel,QRadioButton,
 from PyQt5.QtCore import Qt
 import pyqtgraph as pg
 import numpy as np
+from controller.output_port_controller import OutputPortController 
 
 
 class Component(QWidget):
@@ -41,7 +42,7 @@ class Component(QWidget):
         self.slider_container_layout.addWidget(self.component_slider_label)
         self.component_slider.setFixedWidth(250)
         self.component_slider.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        self.component_slider.valueChanged.connect(self.change_mixing)
+        self.component_slider.valueChanged.connect(self.slider_change)
 
 
         self.setStyleSheet("""
@@ -51,33 +52,14 @@ class Component(QWidget):
                            }
                            """)
         
-    def change_mixing(self):
-        mask = np.ones(self.output_port.main_window.viewports[0].image_object.imgShape)
-        if self.output_port.magnitude_and_phase_radio.isChecked():
-            magnitudeMix = 0
-            phaseMix = 0
-            for i in range(4):
-                if self.output_port.components[i].component_combobox.currentText() == "Magnitude":
-                    magnitudeMix += self.output_port.components[i].component_slider.value() / 100 * np.abs(self.output_port.main_window.viewports[i].image_object.fShift)
-                else : 
-                    phaseMix += self.output_port.components[i].component_slider.value() / 100 * np.angle(self.output_port.main_window.viewports[i].image_object.fShift)
-            output =  np.clip(np.abs(np.fft.ifft2(((magnitudeMix*mask)*np.exp(1j * (phaseMix*mask))))),0,255)  
-            self.output_port.output_viwer.setImage(output)
-        else :
-            realMix = 0
-            imaginaryMix = 0
-            for i in range(4):
-                if self.output_port.components[i].component_combobox.currentText() == "Real":
-                    realMix += self.output_port.components[i].component_slider.value() / 100 * np.real(self.output_port.main_window.viewports[i].image_object.fShift)
-                else :
-                    imaginaryMix += self.output_port.components[i].component_slider.value() / 100 * np.imag(self.output_port.main_window.viewports[i].image_object.fShift)
-            output = np.clip(np.abs(np.fft.ifft2((realMix*mask)+(imaginaryMix*mask)*1j)),0,255)  
-            self.output_port.output_viwer.setImage(output)
+    def slider_change(self):
+        self.output_port.output_controller.change_mixer()
 
 class OutputPort(QWidget):
     def __init__(self,main_window):
         super().__init__()
         self.main_window = main_window
+        self.output_controller = OutputPortController(self)
         self.components = []
         self.central_layout = QVBoxLayout(self)
         self.central_layout.setContentsMargins(0,0,0,0)
