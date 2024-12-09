@@ -1,5 +1,5 @@
 import cv2
-
+import numpy as np
 class ImageViewerController():
     def __init__(self,image_viewer):
         self.image_viewer = image_viewer
@@ -9,7 +9,7 @@ class ImageViewerController():
     def plot_image(self):
         # height, width = self.imgByte.shape
         # image_view_widget.getView().setLimits(xMin=0, xMax=width, yMin=0, yMax=height)
-        self.image_viewer.image_view_widget.setImage(self.image_viewer.image_object.imgByte)
+        self.image_viewer.image_view_widget.setImage(self.image_viewer.image_object.editedimgByte)
         self.image_viewer.enable_controls()
         self.image_viewer.main_window.enable_component_outports_sliders_by_index(self.image_viewer.image_viewer_index)
         self.select_ft_component()
@@ -50,11 +50,36 @@ class ImageViewerController():
             alpha = self.image_viewer.contrast_slider.value() / 100
             beta = self.image_viewer.brightness_slider.value()
 
-            contrasted_image = cv2.convertScaleAbs(self.image_viewer.image_object.imgByte, alpha=alpha, beta=beta)
+            contrasted_image = cv2.convertScaleAbs(self.image_viewer.image_object.sizedimgByte, alpha=alpha, beta=beta)
             self.image_viewer.image_object.calculateFFT(contrasted_image)
             self.image_viewer.image_view_widget.setImage(contrasted_image)
             self.select_ft_component()
             self.image_viewer.main_window.left_output_port.output_controller.change_mixer()
             self.image_viewer.main_window.right_output_port.output_controller.change_mixer()
+
+    def get_minimum_dimension(self, viewports):
+        minWidth = 10000
+        minHeight = 10000
+        for i in range(len(viewports)):
+            if viewports[i].image_object.imgPath:
+                minWidth = min(minWidth, viewports[i].image_object.imgShape[0])
+                minHeight = min(minHeight, viewports[i].image_object.imgShape[1])
+        
+        return minWidth, minHeight
+                
+
+    def unify_images_size(self, viewports):
+        minWidth, minHeight = self.get_minimum_dimension(viewports)
+        resized_images = [... ,... ,..., ... ]
+
+        for i in range(len(viewports)):
+            if viewports[i].image_object.imgPath and np.shape(viewports[i].image_object.imgByte) != (minWidth, minHeight):
+                resized_images[i] = cv2.resize(viewports[i].image_object.imgByte, (minWidth, minHeight))
+        
+        for i in range(len(resized_images)):
+            if viewports[i].image_object.imgPath and np.shape(viewports[i].image_object.imgByte) != (minWidth, minHeight):
+                viewports[i].image_view_widget.setImage(resized_images[i])
+                viewports[i].image_object.sizedimgByte = resized_images[i]
+                viewports[i].image_object.calculateFFT(resized_images[i])
 
     
