@@ -160,6 +160,8 @@ class ImageViewer(QWidget):
         self.ft_components_combobox.setEnabled(True)
         self.brightness_slider.setEnabled(True)
         self.contrast_slider.setEnabled(True)
+        self.brightness_slider.setValue(0)
+        self.contrast_slider.setValue(100)
 
     def double_click_image_handler(self):
         self.image_object.load_image()
