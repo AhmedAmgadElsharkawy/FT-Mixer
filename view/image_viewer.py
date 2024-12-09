@@ -128,6 +128,8 @@ class ImageViewer(QWidget):
         self.image_viewer_controller = ImageViewerController(self)
         self.contrast_slider.valueChanged.connect(self.image_viewer_controller.change_contrast_and_brightness)
         self.brightness_slider.valueChanged.connect(self.image_viewer_controller.change_contrast_and_brightness)
+
+        self.disable_controls()
         
         self.setStyleSheet("""
             #main_widget{
@@ -144,6 +146,16 @@ class ImageViewer(QWidget):
                         }
         """)
     
+    def disable_controls(self):
+        self.ft_components_combobox.setDisabled(True)
+        self.brightness_slider.setDisabled(True)
+        self.contrast_slider.setDisabled(True)
+    
+    def enable_controls(self):
+        self.ft_components_combobox.setEnabled(True)
+        self.brightness_slider.setEnabled(True)
+        self.contrast_slider.setEnabled(True)
+
     def double_click_image_handler(self):
         self.image_object.load_image()
         if self.image_object.imgPath:

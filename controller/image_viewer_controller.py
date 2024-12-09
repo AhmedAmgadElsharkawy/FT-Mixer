@@ -10,6 +10,7 @@ class ImageViewerController():
         # height, width = self.imgByte.shape
         # image_view_widget.getView().setLimits(xMin=0, xMax=width, yMin=0, yMax=height)
         self.image_viewer.image_view_widget.setImage(self.image_viewer.image_object.imgByte)
+        self.image_viewer.enable_controls()
         self.select_ft_component()
 
     def select_ft_component(self):
