@@ -20,7 +20,7 @@ class Component(QWidget):
         self.header_widget_layout.setContentsMargins(0,0,0,0)
         self.header_label = QLabel(header)
         self.component_combobox = QComboBox()
-        self.component_combobox.addItems(["Real","Phase"])
+        self.component_combobox.addItems(["Magnitude","Phase"])
         self.header_widget_layout.addWidget(self.header_label)
         self.header_widget_layout.addWidget(self.component_combobox)
         self.component_main_widget_layout.addWidget(self.header_widget)
@@ -44,7 +44,6 @@ class Component(QWidget):
         self.component_slider.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.component_slider.valueChanged.connect(self.slider_change)
 
-
         self.setStyleSheet("""
                            #component_main_widget{
                             border: 1px solid gray;
@@ -59,7 +58,6 @@ class OutputPort(QWidget):
     def __init__(self,main_window):
         super().__init__()
         self.main_window = main_window
-        self.output_controller = OutputPortController(self)
         self.components = []
         self.central_layout = QVBoxLayout(self)
         self.central_layout.setContentsMargins(0,0,0,0)
@@ -91,8 +89,7 @@ class OutputPort(QWidget):
         self.real_and_imaginary_radio = QRadioButton("Real/imag")
         self.choose_mode_widget_layout.addWidget(self.magnitude_and_phase_radio)
         self.choose_mode_widget_layout.addWidget(self.real_and_imaginary_radio)
-        
-
+    
         self.choose_mode_radio_buttons_group = QButtonGroup()
         self.choose_mode_radio_buttons_group.setExclusive(True)
         self.choose_mode_radio_buttons_group.addButton(self.magnitude_and_phase_radio)
@@ -105,8 +102,6 @@ class OutputPort(QWidget):
         self.components_widget_layout = QVBoxLayout(self.components_widget)
         self.components_widget_layout.setContentsMargins(0,0,0,0)
         self.main_widget_layout.addWidget(self.components_widget)
-        
-
 
         self.component1 = Component("component1", self)
         self.component2 = Component("component2", self)
@@ -123,6 +118,10 @@ class OutputPort(QWidget):
         self.components_widget_layout.addWidget(self.component3)
         self.components_widget_layout.addWidget(self.component4)
         
+        self.output_controller = OutputPortController(self)
+
+        self.magnitude_and_phase_radio.toggled.connect(self.output_controller.set_to_magnitude_and_phase)
+        self.real_and_imaginary_radio.toggled.connect(self.output_controller.set_to_real_and_Imaginary)
 
         # self.choose_mode_radio_buttons_group.buttonClicked.connect(self.update_status)
         

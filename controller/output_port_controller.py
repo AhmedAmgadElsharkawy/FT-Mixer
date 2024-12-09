@@ -27,3 +27,14 @@ class OutputPortController():
             output = np.clip(np.abs(np.fft.ifft2((realMix*mask)+(imaginaryMix*mask)*1j)),0,255)  
             self.output_port.output_viwer.setImage(output)
 
+    def set_to_real_and_Imaginary(self, checked):
+        if checked:
+            for i in range(4):
+                self.output_port.components[i].component_combobox.clear()
+                self.output_port.components[i].component_combobox.addItems(["Real","Imaginary"])
+
+    def set_to_magnitude_and_phase(self, checked):
+        if checked:
+            for i in range(4):
+                self.output_port.components[i].component_combobox.clear()
+                self.output_port.components[i].component_combobox.addItems(["Magnitude","Phase"])
