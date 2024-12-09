@@ -57,8 +57,9 @@ class Component(QWidget):
 class OutputPort(QWidget):
     def __init__(self,main_window):
         super().__init__()
+        self.components_list = []
         self.main_window = main_window
-        self.components = []
+        self.components = [Component("component1", self),Component("component2", self),Component("component3", self),Component("component4", self)]
         self.central_layout = QVBoxLayout(self)
         self.central_layout.setContentsMargins(0,0,0,0)
         self.main_widget = QWidget()
@@ -103,20 +104,8 @@ class OutputPort(QWidget):
         self.components_widget_layout.setContentsMargins(0,0,0,0)
         self.main_widget_layout.addWidget(self.components_widget)
 
-        self.component1 = Component("component1", self)
-        self.component2 = Component("component2", self)
-        self.component3 = Component("component3", self)
-        self.component4 = Component("component4", self)
-
-        self.components.append(self.component1)
-        self.components.append(self.component2)
-        self.components.append(self.component3)
-        self.components.append(self.component4)
-        
-        self.components_widget_layout.addWidget(self.component1)
-        self.components_widget_layout.addWidget(self.component2)
-        self.components_widget_layout.addWidget(self.component3)
-        self.components_widget_layout.addWidget(self.component4)
+        for component in self.components:
+            self.components_widget_layout.addWidget(component)
         
         self.output_controller = OutputPortController(self)
 
