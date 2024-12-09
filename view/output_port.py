@@ -134,6 +134,8 @@ class OutputPort(QWidget):
 
         self.magnitude_and_phase_radio.toggled.connect(self.output_controller.set_to_magnitude_and_phase)
         self.real_and_imaginary_radio.toggled.connect(self.output_controller.set_to_real_and_Imaginary)
+        self.inner_region_mode_radio_button.toggled.connect(self.output_controller.roi_changed)
+        self.outter_region_mode_radio_button.toggled.connect(self.output_controller.roi_changed)
 
         # self.choose_mode_radio_buttons_group.buttonClicked.connect(self.update_status)
 

@@ -49,3 +49,6 @@ class OutputPortController():
                 self.output_port.components[i].component_combobox.clear()
                 self.output_port.components[i].component_combobox.addItems(["Magnitude","Phase"])
                 self.output_port.components[i].component_slider.setValue(0)
+
+    def roi_changed(self):
+        self.change_mixer()
