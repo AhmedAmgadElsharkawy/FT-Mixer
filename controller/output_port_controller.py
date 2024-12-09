@@ -32,9 +32,11 @@ class OutputPortController():
             for i in range(4):
                 self.output_port.components[i].component_combobox.clear()
                 self.output_port.components[i].component_combobox.addItems(["Real","Imaginary"])
+                self.output_port.components[i].component_slider.setValue(0)
 
     def set_to_magnitude_and_phase(self, checked):
         if checked:
             for i in range(4):
                 self.output_port.components[i].component_combobox.clear()
                 self.output_port.components[i].component_combobox.addItems(["Magnitude","Phase"])
+                self.output_port.components[i].component_slider.setValue(0)
