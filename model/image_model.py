@@ -2,9 +2,6 @@ import numpy as np
 import cv2
 from PyQt5.QtWidgets import QFileDialog
 
-
-
-
 class ImageModel():
     def __init__(self):
         self.imgPath =None
@@ -49,13 +46,4 @@ class ImageModel():
             filename, format = QFileDialog.getOpenFileName(None, "Load Image","*.jpg;;" "*.jpeg;;" "*.png;;")
             if filename:
                 self.image_process(filename)
-
-
-
-
-
-    
-        
-
-
-        
+                

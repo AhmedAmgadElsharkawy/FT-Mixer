@@ -31,11 +31,11 @@ class Component(QWidget):
         self.slider_container_layout.setContentsMargins(0,0,0,0)
         self.component_main_widget_layout.addWidget(self.slider_container)
         
-        
         self.component_slider = QSlider(Qt.Horizontal)
         self.component_slider_label = QLabel("0%")
         self.component_slider.setRange(0,100)
-        self.component_slider.setValue(0) 
+        self.component_slider.setValue(0)
+        # self.component_slider.setEnabled(False) 
         
         self.slider_container_layout.addWidget(self.component_slider)
         self.slider_container_layout.addSpacing(25)
