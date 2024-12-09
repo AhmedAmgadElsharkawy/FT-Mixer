@@ -148,14 +148,4 @@ class ImageViewer(QWidget):
         self.image_object.load_image()
         if self.image_object.imgPath:
             self.image_viewer_controller.plot_image()
-
-
-        
-        
-        
-
-    
-            
-
-
-        
+            self.image_viewer_controller.unify_images_size(self.main_window.viewports)
