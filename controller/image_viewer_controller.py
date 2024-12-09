@@ -45,14 +45,14 @@ class ImageViewerController():
 
     def change_contrast_and_brightness(self):
         if self.image_viewer.image_object.imgPath is not None:
-            alpha_value = self.image_viewer.contrast_slider.value()
+            alpha = self.image_viewer.contrast_slider.value() / 100
             beta = self.image_viewer.brightness_slider.value()
-            alpha = alpha_value / 100.0
 
             contrasted_image = cv2.convertScaleAbs(self.image_viewer.image_object.imgByte, alpha=alpha, beta=beta)
             self.image_viewer.image_object.calculateFFT(contrasted_image)
             self.image_viewer.image_view_widget.setImage(contrasted_image)
             self.select_ft_component()
-            self.image_viewer.main_window.left_output_port.components[0].change_mixing()
+            self.image_viewer.main_window.left_output_port.output_controller.change_mixer()
+            self.image_viewer.main_window.right_output_port.output_controller.change_mixer()
 
     
