@@ -32,6 +32,10 @@ class CustomFTViewer(pg.ImageView):
         self.ui.roiBtn.hide()    
         self.ui.menuBtn.hide()
         self.ft_roi.sigRegionChangeFinished.connect(lambda: self.region_update(self.ft_roi,finish = True))
+        self.y1 = 0
+        self.y2 = 1
+        self.x1 = 0
+        self.x2 = 1
 
     def getRoi(self):
         return self.ft_roi

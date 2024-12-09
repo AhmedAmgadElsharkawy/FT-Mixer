@@ -6,6 +6,13 @@ class OutputPortController():
 
     def change_mixer(self):
         mask = np.ones(self.output_port.main_window.viewports[0].image_object.imgShape)
+        window = self.output_port.main_window.viewports[0].ft_viewer
+        if self.output_port.inner_region_mode_radio_button.isChecked():
+            mask = np.zeros(self.output_port.main_window.viewports[0].image_object.imgShape)
+            mask[int(window.y1):int(window.y2)+1,int(window.x1):int(window.x2)+1] = 1
+        else:    
+            mask = np.ones(self.output_port.main_window.viewports[0].image_object.imgShape)
+            mask[int(window.y1):int(window.y2)+1,int(window.x1):int(window.x2)+1] = 0
         if self.output_port.magnitude_and_phase_radio.isChecked():
             magnitudeMix = 0
             phaseMix = 0
