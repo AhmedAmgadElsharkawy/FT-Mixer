@@ -11,6 +11,7 @@ class ImageViewerController():
         # image_view_widget.getView().setLimits(xMin=0, xMax=width, yMin=0, yMax=height)
         self.image_viewer.image_view_widget.setImage(self.image_viewer.image_object.imgByte)
         self.image_viewer.enable_controls()
+        self.image_viewer.main_window.enable_component_outports_sliders_by_index(self.image_viewer.image_viewer_index)
         self.select_ft_component()
 
     def select_ft_component(self):

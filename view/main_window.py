@@ -10,7 +10,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.image_obejcts = [ImageModel(), ImageModel(), ImageModel(), ImageModel()]
-        self.viewports = [ImageViewer(self, self.image_obejcts[0]),ImageViewer(self, self.image_obejcts[1]),ImageViewer(self, self.image_obejcts[2]),ImageViewer(self, self.image_obejcts[3])]
+        self.viewports = [ImageViewer(self, self.image_obejcts[0],0),ImageViewer(self, self.image_obejcts[1],1),ImageViewer(self, self.image_obejcts[2],2),ImageViewer(self, self.image_obejcts[3],3)]
         self.setWindowTitle('FT-Mixer')
         self.setGeometry(20, 50, 1900, 950)
         
@@ -166,4 +166,7 @@ class MainWindow(QMainWindow):
                 view.ft_viewer.getRoi().stateChanged(finish = False) # Update the views after changing without sending stateChangeFinished signal
                 view.ft_viewer.region_update(view.ft_viewer.getRoi(),finish = False)    
 
+    def enable_component_outports_sliders_by_index(self,index):
+        self.right_output_port.enable_component_by_index(index)
+        self.left_output_port.enable_component_by_index(index)
 

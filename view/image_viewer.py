@@ -48,9 +48,10 @@ class CustomFTViewer(pg.ImageView):
         self.x1, self.y1, self.x2, self.y2 = bounds.x(), bounds.y(), bounds.x() + bounds.width(), bounds.y() + bounds.height()
         
 class ImageViewer(QWidget):
-    def __init__(self,main_window,image_object):
+    def __init__(self,main_window,image_object,image_viewer_index):
         super().__init__()
         self.main_window = main_window
+        self.image_viewer_index = image_viewer_index
         self.image_object = image_object
         self.central_layout = QVBoxLayout(self)
         self.central_layout.setContentsMargins(0,0,0,0)

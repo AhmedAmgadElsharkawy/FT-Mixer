@@ -114,7 +114,7 @@ class OutputPort(QWidget):
         self.real_and_imaginary_radio.toggled.connect(self.output_controller.set_to_real_and_Imaginary)
 
         # self.choose_mode_radio_buttons_group.buttonClicked.connect(self.update_status)
-        
+
         self.setStyleSheet("""
             #choose_mode_widget{
                 border:1px solid gray;
@@ -125,4 +125,7 @@ class OutputPort(QWidget):
                 border-radius:7px;          
                 }
         """)
+
+    def enable_component_by_index(self,index):
+        self.components[index].setEnabled(True)
         
