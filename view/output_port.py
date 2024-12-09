@@ -83,7 +83,7 @@ class OutputPort(QWidget):
         self.choose_mode_widget_layout = QHBoxLayout(self.choose_mode_widget)
         self.main_widget_layout.addWidget(self.choose_mode_widget)
         
-        self.choose_mode_label = QLabel("Choose Mode:")
+        self.choose_mode_label = QLabel("Mixer Mode:")
         self.choose_mode_widget_layout.addWidget(self.choose_mode_label)
 
         self.magnitude_and_phase_radio = QRadioButton("Mag/Phase")
@@ -97,6 +97,27 @@ class OutputPort(QWidget):
         self.choose_mode_radio_buttons_group.addButton(self.real_and_imaginary_radio)
 
         self.magnitude_and_phase_radio.setChecked(True)
+
+        self.choose_mixer_region_widget = QWidget()
+        self.choose_mixer_region_widget_layout = QHBoxLayout(self.choose_mixer_region_widget)
+        self.choose_mixer_region_widget.setFixedHeight(50)
+        self.choose_mixer_region_widget.setObjectName("choose_mixer_region_widget")
+        self.main_widget_layout.addWidget(self.choose_mixer_region_widget)
+        self.choose_mixer_region_label = QLabel("Mixer Region:")
+        self.choose_mixer_region_widget_layout.addWidget(self.choose_mixer_region_label)
+
+        self.inner_region_mode_radio_button = QRadioButton("Inner Mode")
+        self.outter_region_mode_radio_button = QRadioButton("Outter Mode")
+        self.choose_mixer_region_widget_layout.addWidget(self.inner_region_mode_radio_button)
+        self.choose_mixer_region_widget_layout.addWidget(self.outter_region_mode_radio_button)
+    
+        self.choose_mixer_region_radio_buttons_group = QButtonGroup()
+        self.choose_mixer_region_radio_buttons_group.setExclusive(True)
+        self.choose_mixer_region_radio_buttons_group.addButton(self.inner_region_mode_radio_button)
+        self.choose_mixer_region_radio_buttons_group.addButton(self.outter_region_mode_radio_button)
+
+        self.inner_region_mode_radio_button.setChecked(True)
+
 
         self.components_widget = QWidget()
         self.components_widget.setObjectName("components_widget")
@@ -123,6 +144,10 @@ class OutputPort(QWidget):
             #components_widget{
                  border:1px solid gray;
                 border-radius:7px;          
+                }
+            #choose_mixer_region_widget{
+                border:1px solid gray;
+                border-radius:7px;
                 }
         """)
 
