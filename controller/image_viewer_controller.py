@@ -53,5 +53,6 @@ class ImageViewerController():
             self.image_viewer.image_object.calculateFFT(contrasted_image)
             self.image_viewer.image_view_widget.setImage(contrasted_image)
             self.select_ft_component()
+            self.image_viewer.main_window.left_output_port.components[0].change_mixing()
 
     
