@@ -106,6 +106,7 @@ class OutputPort(QWidget):
 
         for component in self.components:
             self.components_widget_layout.addWidget(component)
+            component.setDisabled(True)
         
         self.output_controller = OutputPortController(self)
 
