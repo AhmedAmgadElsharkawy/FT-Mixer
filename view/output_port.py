@@ -26,7 +26,6 @@ class Component(QWidget):
         self.component_main_widget_layout.addWidget(self.header_widget)
         
         self.slider_container = QWidget()
-        self.slider_container.setContentsMargins(0,0,0,0)
         self.slider_container_layout = QHBoxLayout(self.slider_container)
         self.slider_container_layout.setContentsMargins(0,0,0,0)
         self.component_main_widget_layout.addWidget(self.slider_container)
@@ -35,6 +34,7 @@ class Component(QWidget):
         self.component_slider_label = QLabel("0%")
         self.component_slider.setRange(0,100)
         self.component_slider.setValue(0)
+        self.component_slider.setSingleStep(1)
         # self.component_slider.setEnabled(False) 
         
         self.slider_container_layout.addWidget(self.component_slider)
@@ -53,6 +53,7 @@ class Component(QWidget):
         
     def slider_change(self):
         self.output_port.output_controller.change_mixer()
+        self.component_slider_label.setText(f"{self.component_slider.value()}%")
 
 class OutputPort(QWidget):
     def __init__(self,main_window):
