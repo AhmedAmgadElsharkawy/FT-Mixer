@@ -43,6 +43,7 @@ class Component(QWidget):
         self.component_slider.setFixedWidth(250)
         self.component_slider.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.component_slider.valueChanged.connect(self.slider_change)
+        self.component_combobox.currentIndexChanged.connect(self.output_port.output_controller.change_mixer)
 
         self.setStyleSheet("""
                            #component_main_widget{
@@ -60,6 +61,7 @@ class OutputPort(QWidget):
         super().__init__()
         self.components_list = []
         self.main_window = main_window
+        self.output_controller = OutputPortController(self)
         self.components = [Component("component1", self),Component("component2", self),Component("component3", self),Component("component4", self)]
         self.central_layout = QVBoxLayout(self)
         self.central_layout.setContentsMargins(0,0,0,0)
@@ -129,8 +131,6 @@ class OutputPort(QWidget):
         for component in self.components:
             self.components_widget_layout.addWidget(component)
             component.setDisabled(True)
-        
-        self.output_controller = OutputPortController(self)
 
         self.magnitude_and_phase_radio.toggled.connect(self.output_controller.set_to_magnitude_and_phase)
         self.real_and_imaginary_radio.toggled.connect(self.output_controller.set_to_real_and_Imaginary)
