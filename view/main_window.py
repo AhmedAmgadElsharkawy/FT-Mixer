@@ -164,7 +164,10 @@ class MainWindow(QMainWindow):
             if view.ft_viewer.getRoi() is not roi:
                 view.ft_viewer.getRoi().setState(new_state, update = False) # Set the state of the other views without sending update signal
                 view.ft_viewer.getRoi().stateChanged(finish = False) # Update the views after changing without sending stateChangeFinished signal
-                view.ft_viewer.region_update(view.ft_viewer.getRoi(),finish = False)    
+                view.ft_viewer.region_update(view.ft_viewer.getRoi(),finish = False)
+
+        self.right_output_port.output_controller.change_mixer()  
+        self.left_output_port.output_controller.change_mixer()  
 
     def enable_component_outports_sliders_by_index(self,index):
         self.right_output_port.enable_component_by_index(index)

@@ -166,3 +166,4 @@ class ImageViewer(QWidget):
         if self.image_object.imgPath:
             self.image_viewer_controller.unify_images_size(self.main_window.viewports)
             self.image_viewer_controller.plot_image()
+            self.ft_viewer.region_update(self.ft_viewer.ft_roi)
