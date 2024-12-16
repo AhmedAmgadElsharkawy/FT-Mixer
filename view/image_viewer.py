@@ -3,6 +3,8 @@ import pyqtgraph as pg
 from PyQt5.QtCore import Qt, QObject, pyqtSignal
 from controller.image_viewer_controller import ImageViewerController
 import numpy as np
+import logging
+logger = logging.getLogger(__name__)
 
 
 
@@ -72,12 +74,9 @@ class ImageViewer(QWidget):
         self.image_view_widget = CustomImageView(self.double_click_image_handler)
         self.viwers_widget_layout.addWidget(self.image_view_widget)
 
-
         self.ft_viewer = CustomFTViewer()
         self.ft_viewer.setObjectName("ft_viewer")
         self.viwers_widget_layout.addWidget(self.ft_viewer)
-
-
 
         self.image_controls_widget = QWidget()
         self.image_controls_widget.setObjectName("image_controls_widget")
@@ -102,7 +101,6 @@ class ImageViewer(QWidget):
         self.sliders_widget_layout = QHBoxLayout(self.sliders_widget) 
         # self.sliders_widget_layout.setContentsMargins(0, 0, 0, 0)
         self.image_controls_widget_layout.addWidget(self.sliders_widget)
-
 
         self.brightness_control_widget = QWidget()
         self.brightness_control_widget_layout = QHBoxLayout(self.brightness_control_widget)
@@ -166,6 +164,7 @@ class ImageViewer(QWidget):
     def double_click_image_handler(self):
         self.image_object.load_image()
         if self.image_object.imgPath:
+            logger.info("A new image has been uploaded")
             self.image_viewer_controller.unify_images_size(self.main_window.viewports)
             self.image_viewer_controller.plot_image()
             self.ft_viewer.region_update(self.ft_viewer.ft_roi)
