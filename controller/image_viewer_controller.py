@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+import logging
+logger = logging.getLogger(__name__)
 class ImageViewerController():
     def __init__(self,image_viewer):
         self.image_viewer = image_viewer
@@ -34,22 +36,25 @@ class ImageViewerController():
     
     def show_magnitude_components(self):
         self.image_viewer.ft_viewer.setImage(self.image_viewer.image_object.magnitudePlot)
+        logger.info("Image FT plot has been changed to Magnitude plot")
 
     def show_phase_components(self):
         self.image_viewer.ft_viewer.setImage(self.image_viewer.image_object.phasePlot)
-
+        logger.info("Image FT plot has been changed to Phase plot")
 
     def show_imaginary_components(self):
         self.image_viewer.ft_viewer.setImage(self.image_viewer.image_object.imaginaryPlot)
-
+        logger.info("Image FT plot has been changed to Real plot")
 
     def show_real_components(self):
         self.image_viewer.ft_viewer.setImage(self.image_viewer.image_object.realPlot)
+        logger.info("Image FT plot has been changed to Imaginary plot")
 
     def change_contrast_and_brightness(self):
         if self.image_viewer.image_object.imgPath is not None:
             alpha = self.image_viewer.contrast_slider.value() / 100
             beta = self.image_viewer.brightness_slider.value()
+            logger.info("Contrast or Brightness has been changed for this viewer")
 
             contrasted_image = cv2.convertScaleAbs(self.image_viewer.image_object.sizedimgByte, alpha=alpha, beta=beta)
             self.image_viewer.image_object.calculateFFT(contrasted_image)
