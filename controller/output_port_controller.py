@@ -1,4 +1,6 @@
 import numpy as np
+import logging
+logger = logging.getLogger(__name__)
 
 class OutputPortController():
     def __init__(self,output_port):
@@ -37,6 +39,7 @@ class OutputPortController():
 
     def set_to_real_and_Imaginary(self, checked):
         if checked:
+            logger.info("Output mode has been changed to real_&_imaginary mode")
             for i in range(4):
                 self.output_port.components[i].component_combobox.clear()
                 self.output_port.components[i].component_combobox.addItems(["Real","Imaginary"])
@@ -44,6 +47,7 @@ class OutputPortController():
 
     def set_to_magnitude_and_phase(self, checked):
         if checked:
+            logger.info("Output mode has been changed to magnitude_&_phase mode")
             for i in range(4):
                 self.output_port.components[i].component_combobox.clear()
                 self.output_port.components[i].component_combobox.addItems(["Magnitude","Phase"])

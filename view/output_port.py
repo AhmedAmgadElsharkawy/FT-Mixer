@@ -3,7 +3,8 @@ from PyQt5.QtCore import Qt
 import pyqtgraph as pg
 import numpy as np
 from controller.output_port_controller import OutputPortController 
-
+import logging
+logger = logging.getLogger(__name__)
 
 class Component(QWidget):
     def __init__(self,header, output_port):
@@ -53,6 +54,7 @@ class Component(QWidget):
                            """)
         
     def slider_change(self):
+        logger.info("The component's slider has been changed")
         self.output_port.output_controller.change_mixer()
         self.component_slider_label.setText(f"{self.component_slider.value()}%")
 
@@ -78,7 +80,6 @@ class OutputPort(QWidget):
         self.output_viwer.ui.menuBtn.hide()
         self.output_viwer.setFixedHeight(350)
         self.main_widget_layout.addWidget(self.output_viwer)
-        # self.main_widget_layout.addStretch()
 
         self.choose_mode_widget = QWidget()
         self.choose_mode_widget.setFixedHeight(50)
@@ -120,7 +121,6 @@ class OutputPort(QWidget):
         self.choose_mixer_region_radio_buttons_group.addButton(self.outter_region_mode_radio_button)
 
         self.inner_region_mode_radio_button.setChecked(True)
-
 
         self.components_widget = QWidget()
         self.components_widget.setObjectName("components_widget")
