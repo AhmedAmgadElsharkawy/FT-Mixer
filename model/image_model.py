@@ -1,6 +1,8 @@
 import numpy as np
 import cv2
 from PyQt5.QtWidgets import QFileDialog
+import logging
+logger = logging.getLogger(__name__)
 
 class ImageModel():
     def __init__(self):
@@ -23,6 +25,7 @@ class ImageModel():
         self.imaginaryPlot =None
 
     def image_process(self,imgPath: str):
+        logger.info("Starting the initial image processing")
         self.imgPath = imgPath
         self.imgByte = cv2.imread(self.imgPath, flags=cv2.IMREAD_GRAYSCALE).T
         self.imgShape = self.imgByte.shape
@@ -33,6 +36,7 @@ class ImageModel():
         self.calculateFFT(self.imgByte)
 
     def calculateFFT(self, img):
+        logger.info("Calculating the FFT for this image")
         self.editedimgByte = img
         self.dft = np.fft.fft2(img)
         self.real = np.real(self.dft)
