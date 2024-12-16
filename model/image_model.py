@@ -42,7 +42,7 @@ class ImageModel():
         self.fShift = np.fft.fftshift(self.dft)
         self.magnitudePlot = 20 * np.log(np.abs(self.fShift))
         self.phasePlot = np.angle(self.fShift)
-        self.realPlot = 20 * np.log(np.real(self.fShift))
+        self.realPlot = 20 * np.log(abs(np.real(self.fShift))+(1e-9))
         self.imaginaryPlot = np.imag(self.fShift)
 
     def load_image(self):
