@@ -7,12 +7,18 @@ class OutputPortController():
         self.output_port = output_port
 
     def change_mixer(self):
-        window = self.output_port.main_window.viewports[0].ft_viewer
+        index = -1
+        for i in range(4):
+            if self.output_port.main_window.image_obejcts[i].imgPath:
+                index = i
+        if index == -1:
+            return
+        window = self.output_port.main_window.viewports[index].ft_viewer
         if self.output_port.inner_region_mode_radio_button.isChecked():
-            mask = np.zeros(np.shape(self.output_port.main_window.viewports[0].image_object.editedimgByte))
+            mask = np.zeros(np.shape(self.output_port.main_window.viewports[index].image_object.editedimgByte))
             mask[int(window.y1):int(window.y2)+1,int(window.x1):int(window.x2)+1] = 1
         else:    
-            mask = np.ones(np.shape(self.output_port.main_window.viewports[0].image_object.editedimgByte))
+            mask = np.ones(np.shape(self.output_port.main_window.viewports[index].image_object.editedimgByte))
             mask[int(window.y1):int(window.y2)+1,int(window.x1):int(window.x2)+1] = 0
         if self.output_port.magnitude_and_phase_radio.isChecked():
             magnitudeMix = 0
@@ -39,19 +45,19 @@ class OutputPortController():
 
     def set_to_real_and_Imaginary(self, checked):
         if checked:
-            logger.info("Output mode has been changed to real_&_imaginary mode")
             for i in range(4):
                 self.output_port.components[i].component_combobox.clear()
                 self.output_port.components[i].component_combobox.addItems(["Real","Imaginary"])
                 self.output_port.components[i].component_slider.setValue(0)
+            logger.info("Output mode has been changed to real_&_imaginary mode")
 
     def set_to_magnitude_and_phase(self, checked):
         if checked:
-            logger.info("Output mode has been changed to magnitude_&_phase mode")
             for i in range(4):
                 self.output_port.components[i].component_combobox.clear()
                 self.output_port.components[i].component_combobox.addItems(["Magnitude","Phase"])
                 self.output_port.components[i].component_slider.setValue(0)
+            logger.info("Output mode has been changed to magnitude_&_phase mode")
 
     def roi_changed(self):
         self.change_mixer()
