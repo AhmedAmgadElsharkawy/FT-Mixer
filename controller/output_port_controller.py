@@ -1,6 +1,9 @@
 import numpy as np
 import logging
 logger = logging.getLogger(__name__)
+from PyQt5.QtCore import QPointF
+
+
 
 class OutputPortController():
     def __init__(self,output_port):
@@ -13,13 +16,34 @@ class OutputPortController():
                 index = i
         if index == -1:
             return
+        original_x1 = self.output_port.main_window.viewports[index].ft_viewer.ft_roi.sceneBoundingRect().x()
+        original_x2 = self.output_port.main_window.viewports[index].ft_viewer.ft_roi.sceneBoundingRect().width() + original_x1
+        original_y1 = self.output_port.main_window.viewports[index].ft_viewer.ft_roi.sceneBoundingRect().y()
+        original_y2 = self.output_port.main_window.viewports[index].ft_viewer.ft_roi.sceneBoundingRect().height() + original_y1
+
+        # Map the scene points to the image's local space
+        scene_point = QPointF(original_x1, original_y1)
+        image_point = self.output_port.main_window.viewports[index].ft_viewer.imageItem.mapFromScene(scene_point)
+
+        scene_point2 = QPointF(original_x2, original_y2)
+        image_point2 = self.output_port.main_window.viewports[index].ft_viewer.imageItem.mapFromScene(scene_point2)
+
+        mask_shape = np.shape(self.output_port.main_window.viewports[index].image_object.editedimgByte)
+        mask_width,mask_height = mask_shape
+
+        clamped_x1 = min(max(int(image_point.x()), 0), mask_width - 1)
+        clamped_y1 = min(max(int(image_point.y()), 0), mask_height - 1)
+
+        clamped_x2 = min(max(int(image_point2.x()), 0), mask_width - 1)
+        clamped_y2 = min(max(int(image_point2.y()), 0), mask_height - 1)
+
         window = self.output_port.main_window.viewports[index].ft_viewer
         if self.output_port.inner_region_mode_radio_button.isChecked():
             mask = np.zeros(np.shape(self.output_port.main_window.viewports[index].image_object.editedimgByte))
-            mask[int(window.y1):int(window.y2)+1,int(window.x1):int(window.x2)+1] = 1
+            mask[ clamped_x1:clamped_x2,clamped_y1:clamped_y2] = 1
         else:    
             mask = np.ones(np.shape(self.output_port.main_window.viewports[index].image_object.editedimgByte))
-            mask[int(window.y1):int(window.y2)+1,int(window.x1):int(window.x2)+1] = 0
+            mask[ clamped_x1:clamped_x2,clamped_y1:clamped_y2] = 0
         if self.output_port.magnitude_and_phase_radio.isChecked():
             magnitudeMix = 0
             phaseMix = 0
