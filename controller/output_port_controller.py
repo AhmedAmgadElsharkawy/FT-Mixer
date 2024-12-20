@@ -35,7 +35,7 @@ class OutputPortController():
         clamped_x2 = min(max(int(image_point2.x()), 0), mask_width - 1)
         clamped_y2 = min(max(int(image_point2.y()), 0), mask_height - 1)
 
-        window = self.output_port.main_window.viewports[index].ft_viewer
+        # window = self.output_port.main_window.viewports[index].ft_viewer
         if self.output_port.inner_region_mode_radio_button.isChecked():
             mask = np.zeros(np.shape(self.output_port.main_window.viewports[index].image_object.editedimgByte))
             mask[ clamped_x1:clamped_x2,clamped_y1:clamped_y2] = 1
@@ -63,7 +63,7 @@ class OutputPortController():
                         imaginaryMix += self.output_port.components[i].component_slider.value() / 100 * self.output_port.main_window.viewports[i].image_object.get_imaginary()
             result =  (realMix*mask)+(imaginaryMix*mask)*1j
         
-        output = np.clip(np.abs(np.fft.ifft2(result)),0,255)  
+        output = self.output_port.main_window.viewports[i].image_object.calculateIFFT(result) 
         self.output_port.output_viwer.setImage(output)
 
     def set_to_real_and_Imaginary(self, checked):

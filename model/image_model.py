@@ -11,8 +11,6 @@ class ImageModel():
         self.imgShape =None
         self.sizedimgByte =None
         self.editedimgByte =None
-        self.contrastedimgByte =None
-        self.brightenedimgByte =None
         self.dft =None
         self.real =None
         self.imaginary =None
@@ -21,7 +19,7 @@ class ImageModel():
         self.fShift =None
         self.magnitudePlot =None
         self.phasePlot =None
-        self.realPlot=None
+        self.realPlot =None
         self.imaginaryPlot =None
 
     def image_process(self,imgPath: str):
@@ -30,8 +28,6 @@ class ImageModel():
         self.imgByte = cv2.imread(self.imgPath, flags=cv2.IMREAD_GRAYSCALE).T
         self.imgShape = self.imgByte.shape
         self.editedimgByte = self.imgByte.copy()
-        self.contrastedimgByte = self.imgByte
-        self.brightenedimgByte = self.imgByte
         self.sizedimgByte = self.imgByte
         self.calculateFFT(self.imgByte)
 
@@ -48,6 +44,9 @@ class ImageModel():
         self.phasePlot = self.phase
         self.realPlot = 20 * np.log(abs(self.real)+(1e-9))
         self.imaginaryPlot = self.imaginary
+
+    def calculateIFFT(self, data):
+         return np.clip(np.abs(np.fft.ifft2(data)),0,255)
 
     def load_image(self):
             filename, format = QFileDialog.getOpenFileName(None, "Load Image","*.jpg;;" "*.jpeg;;" "*.png;;")
