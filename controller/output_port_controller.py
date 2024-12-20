@@ -3,8 +3,6 @@ import logging
 logger = logging.getLogger(__name__)
 from PyQt5.QtCore import QPointF
 
-
-
 class OutputPortController():
     def __init__(self,output_port):
         self.output_port = output_port
@@ -50,9 +48,9 @@ class OutputPortController():
             for i in range(4):
                 if self.output_port.main_window.viewports[i].image_object.imgPath:
                     if self.output_port.components[i].component_combobox.currentText() == "Magnitude":
-                        magnitudeMix += self.output_port.components[i].component_slider.value() / 100 * np.abs(self.output_port.main_window.viewports[i].image_object.fShift)
+                        magnitudeMix += self.output_port.components[i].component_slider.value() / 100 * self.output_port.main_window.viewports[i].image_object.get_magnitude()
                     else : 
-                        phaseMix += self.output_port.components[i].component_slider.value() / 100 * np.angle(self.output_port.main_window.viewports[i].image_object.fShift)
+                        phaseMix += self.output_port.components[i].component_slider.value() / 100 * self.output_port.main_window.viewports[i].image_object.get_phase()
             result = (magnitudeMix*mask)*np.exp(1j * (phaseMix*mask))
         else :
             realMix = 0
@@ -60,9 +58,9 @@ class OutputPortController():
             for i in range(4):
                 if self.output_port.main_window.viewports[i].image_object.imgPath:
                     if self.output_port.components[i].component_combobox.currentText() == "Real":
-                        realMix += self.output_port.components[i].component_slider.value() / 100 * np.real(self.output_port.main_window.viewports[i].image_object.fShift)
+                        realMix += self.output_port.components[i].component_slider.value() / 100 * self.output_port.main_window.viewports[i].image_object.get_real()
                     else :
-                        imaginaryMix += self.output_port.components[i].component_slider.value() / 100 * np.imag(self.output_port.main_window.viewports[i].image_object.fShift)
+                        imaginaryMix += self.output_port.components[i].component_slider.value() / 100 * self.output_port.main_window.viewports[i].image_object.get_imaginary()
             result =  (realMix*mask)+(imaginaryMix*mask)*1j
         
         output = np.clip(np.abs(np.fft.ifft2(result)),0,255)  

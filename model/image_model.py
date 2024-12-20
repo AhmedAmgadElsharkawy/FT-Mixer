@@ -39,18 +39,33 @@ class ImageModel():
         logger.info("Calculating the FFT for this image")
         self.editedimgByte = img
         self.dft = np.fft.fft2(img)
-        self.real = np.real(self.dft)
-        self.imaginary = np.imag(self.dft)
-        self.magnitude = np.abs(self.dft)
-        self.phase = np.angle(self.dft)
         self.fShift = np.fft.fftshift(self.dft)
-        self.magnitudePlot = 20 * np.log(np.abs(self.fShift))
-        self.phasePlot = np.angle(self.fShift)
-        self.realPlot = 20 * np.log(abs(np.real(self.fShift))+(1e-9))
-        self.imaginaryPlot = np.imag(self.fShift)
+        self.real = np.real(self.fShift)
+        self.imaginary = np.imag(self.fShift)
+        self.magnitude = np.abs(self.fShift)
+        self.phase = np.angle(self.fShift)
+        self.magnitudePlot = 20 * np.log(self.magnitude)
+        self.phasePlot = self.phase
+        self.realPlot = 20 * np.log(abs(self.real)+(1e-9))
+        self.imaginaryPlot = self.imaginary
 
     def load_image(self):
             filename, format = QFileDialog.getOpenFileName(None, "Load Image","*.jpg;;" "*.jpeg;;" "*.png;;")
             if filename:
                 self.image_process(filename)
+
+    def get_fshift(self):
+         return self.fShift
+    
+    def get_real(self):
+         return self.real
+    
+    def get_imaginary(self):
+         return self.imaginary
+    
+    def get_magnitude(self):
+         return self.magnitude
+    
+    def get_phase(self):
+         return self.phase
                 
