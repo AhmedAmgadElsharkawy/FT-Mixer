@@ -53,8 +53,7 @@ class OutputPortController():
                         magnitudeMix += self.output_port.components[i].component_slider.value() / 100 * np.abs(self.output_port.main_window.viewports[i].image_object.fShift)
                     else : 
                         phaseMix += self.output_port.components[i].component_slider.value() / 100 * np.angle(self.output_port.main_window.viewports[i].image_object.fShift)
-            output =  np.clip(np.abs(np.fft.ifft2(((magnitudeMix*mask)*np.exp(1j * (phaseMix*mask))))),0,255)  
-            self.output_port.output_viwer.setImage(output)
+            result = (magnitudeMix*mask)*np.exp(1j * (phaseMix*mask))
         else :
             realMix = 0
             imaginaryMix = 0
@@ -64,8 +63,10 @@ class OutputPortController():
                         realMix += self.output_port.components[i].component_slider.value() / 100 * np.real(self.output_port.main_window.viewports[i].image_object.fShift)
                     else :
                         imaginaryMix += self.output_port.components[i].component_slider.value() / 100 * np.imag(self.output_port.main_window.viewports[i].image_object.fShift)
-            output =  np.clip(np.abs(np.fft.ifft2((realMix*mask)+(imaginaryMix*mask)*1j)),0,255)  
-            self.output_port.output_viwer.setImage(output)
+            result =  (realMix*mask)+(imaginaryMix*mask)*1j
+        
+        output = np.clip(np.abs(np.fft.ifft2(result)),0,255)  
+        self.output_port.output_viwer.setImage(output)
 
     def set_to_real_and_Imaginary(self, checked):
         if checked:
