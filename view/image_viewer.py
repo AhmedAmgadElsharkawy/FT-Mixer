@@ -5,7 +5,7 @@ import logging
 logger = logging.getLogger(__name__)
 from controller.image_viewer_controller import ImageViewerController
 from view.custom_image_view import CustomImageView
-from view.custom_ft_view import CustomFTViewer
+from view.custom_ft_view import CustomFTView
 
 class ImageViewer(QWidget):
     def __init__(self,main_window,image_object,image_viewer_index):
@@ -28,7 +28,7 @@ class ImageViewer(QWidget):
         self.image_view_widget = CustomImageView(self.double_click_image_handler)
         self.viwers_widget_layout.addWidget(self.image_view_widget)
 
-        self.ft_viewer = CustomFTViewer()
+        self.ft_viewer = CustomFTView()
         self.ft_viewer.setObjectName("ft_viewer")
         self.viwers_widget_layout.addWidget(self.ft_viewer)
 
