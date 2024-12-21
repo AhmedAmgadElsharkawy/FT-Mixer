@@ -41,7 +41,7 @@ class OutputPortController():
             mask[ clamped_x1:clamped_x2,clamped_y1:clamped_y2] = 1
         else:    
             mask = np.ones(np.shape(self.output_port.main_window.viewports[index].image_object.editedimgByte))
-            mask[ clamped_x1:clamped_x2,clamped_y1:clamped_y2] = 0
+            mask[ clamped_x1:clamped_x2+1,clamped_y1:clamped_y2+1] = 0
         if self.output_port.magnitude_and_phase_radio.isChecked():
             magnitudeMix = 0
             phaseMix = 0
