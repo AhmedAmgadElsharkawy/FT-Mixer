@@ -28,7 +28,7 @@ class ImageModel():
         self.imgByte = cv2.imread(self.imgPath, flags=cv2.IMREAD_GRAYSCALE).T
         self.imgShape = self.imgByte.shape
         self.editedimgByte = self.imgByte.copy()
-        self.sizedimgByte = self.imgByte
+        self.sizedimgByte = self.imgByte.copy()
         self.calculateFFT(self.imgByte)
 
     def calculateFFT(self, img):
