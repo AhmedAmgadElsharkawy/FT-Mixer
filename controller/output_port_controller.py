@@ -34,14 +34,14 @@ class OutputPortController():
 
         clamped_x2 = min(max(int(image_point2.x()), 0), mask_width - 1)
         clamped_y2 = min(max(int(image_point2.y()), 0), mask_height - 1)
-
+        
         # window = self.output_port.main_window.viewports[index].ft_viewer
         if self.output_port.inner_region_mode_radio_button.isChecked():
             mask = np.zeros(np.shape(self.output_port.main_window.viewports[index].image_object.editedimgByte))
             mask[ clamped_x1:clamped_x2,clamped_y1:clamped_y2] = 1
         else:    
             mask = np.ones(np.shape(self.output_port.main_window.viewports[index].image_object.editedimgByte))
-            mask[ clamped_x1:clamped_x2,clamped_y1:clamped_y2] = 0
+            mask[ clamped_x1:clamped_x2 + 1,clamped_y1:clamped_y2 + 1] = 0
         if self.output_port.magnitude_and_phase_radio.isChecked():
             magnitudeMix = 0
             phaseMix = 0
