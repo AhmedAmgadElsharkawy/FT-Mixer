@@ -38,19 +38,25 @@ class OutputPortController():
         # window = self.output_port.main_window.viewports[index].ft_viewer
         if self.output_port.inner_region_mode_radio_button.isChecked():
             mask = np.zeros(np.shape(self.output_port.main_window.viewports[index].image_object.editedimgByte))
-            mask[ clamped_x1:clamped_x2,clamped_y1:clamped_y2] = 1
+            mask[ clamped_x1:clamped_x2 + 1,clamped_y1:clamped_y2 + 1] = 1
         else:    
             mask = np.ones(np.shape(self.output_port.main_window.viewports[index].image_object.editedimgByte))
             mask[ clamped_x1:clamped_x2 + 1,clamped_y1:clamped_y2 + 1] = 0
         if self.output_port.magnitude_and_phase_radio.isChecked():
+            magChanged = False
             magnitudeMix = 0
             phaseMix = 0
             for i in range(4):
                 if self.output_port.main_window.viewports[i].image_object.imgPath:
                     if self.output_port.components[i].component_combobox.currentText() == "Magnitude":
-                        magnitudeMix += self.output_port.components[i].component_slider.value() / 100 * self.output_port.main_window.viewports[i].image_object.get_magnitude()
+                        mag = self.output_port.components[i].component_slider.value()
+                        if mag != 0:
+                            magChanged = True
+                        magnitudeMix += mag / 100 * self.output_port.main_window.viewports[i].image_object.get_magnitude()
                     else : 
                         phaseMix += self.output_port.components[i].component_slider.value() / 100 * self.output_port.main_window.viewports[i].image_object.get_phase()
+            if not magChanged:
+                magnitudeMix = mask
             result = (magnitudeMix*mask)*np.exp(1j * (phaseMix*mask))
         else :
             realMix = 0
