@@ -1,5 +1,5 @@
 # FT-Mixer
-Desktop app for mixing Fourier Transform components of images with real-time visualization, region-based mixing, and threaded processing.
+Desktop app that demonstrates the importance of magnitude and phase components in 2D signals, specifically grayscale images. It allows users to view and manipulate the Fourier transform components (magnitude, phase, real, imaginary) of multiple images, customize the weights for mixing, select regions for each component, and visualize the real-time effects with adjustable brightness, contrast, and output port options.
 
 ## Table of Contents
 - [Demo](#demo)
