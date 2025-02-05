@@ -49,9 +49,9 @@ class ImageModel():
          return np.clip(np.abs(np.fft.ifft2(data)),0,255)
 
     def load_image(self):
-            filename, format = QFileDialog.getOpenFileName(None, "Load Image","*.jpg;;" "*.jpeg;;" "*.png;;")
-            if filename:
-                self.image_process(filename)
+        filename, format = QFileDialog.getOpenFileName(None, "Load Image","*.jpg;;" "*.jpeg;;" "*.png;;")
+        if filename:
+            self.image_process(filename)
 
     def get_fshift(self):
          return self.fShift

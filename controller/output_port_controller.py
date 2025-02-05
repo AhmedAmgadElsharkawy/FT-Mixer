@@ -44,6 +44,7 @@ class OutputPortController():
             mask[ clamped_x1:clamped_x2 + 1,clamped_y1:clamped_y2 + 1] = 0
         if self.output_port.magnitude_and_phase_radio.isChecked():
             magChanged = False
+            phases_num = 0
             magnitudeMix = 0
             phaseMix = 0
             for i in range(4):
@@ -53,10 +54,14 @@ class OutputPortController():
                         if mag != 0:
                             magChanged = True
                         magnitudeMix += mag / 100 * self.output_port.main_window.viewports[i].image_object.get_magnitude()
-                    else : 
+                    else :
+                        if self.output_port.components[i].component_slider.value() > 0:
+                            phases_num += 1
                         phaseMix += self.output_port.components[i].component_slider.value() / 100 * self.output_port.main_window.viewports[i].image_object.get_phase()
             if not magChanged:
                 magnitudeMix = mask
+            if phases_num != 0:
+                phaseMix /= phases_num
             result = (magnitudeMix*mask)*np.exp(1j * (phaseMix*mask))
         else :
             realMix = 0
