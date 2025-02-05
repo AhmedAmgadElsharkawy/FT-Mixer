@@ -67,4 +67,15 @@ class ImageModel():
     
     def get_phase(self):
          return self.phase
-                
+    
+    def get_phase_plot(self):
+          return self.phasePlot
+     
+    def get_magnitude_plot(self):
+        return self.magnitudePlot
+    
+    def get_real_plot(self):
+        return self.realPlot
+    
+    def get_imaginary_plot(self):
+        return self.imaginaryPlot
