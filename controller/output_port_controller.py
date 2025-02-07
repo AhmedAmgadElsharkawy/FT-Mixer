@@ -43,10 +43,7 @@ class OutputPortController():
             mask = np.ones(np.shape(self.output_port.main_window.viewports[index].image_object.editedimgByte))
             mask[ clamped_x1:clamped_x2 + 1,clamped_y1:clamped_y2 + 1] = 0
         if self.output_port.magnitude_and_phase_radio.isChecked():
-            magChanged = False
-            phases_counter = 0
-            magnitudeMix = 0
-            phaseMix = 0
+            magChanged, phases_counter, magnitudeMix, phaseMix = self.magnitude_and_phase_initializations()
             for i in range(4):
                 if self.output_port.main_window.viewports[i].image_object.imgPath:
                     if self.output_port.components[i].component_combobox.currentText() == "Magnitude":
@@ -95,3 +92,11 @@ class OutputPortController():
 
     def roi_changed(self):
         self.change_mixer()
+
+    def magnitude_and_phase_initializations(self):
+        magChanged = False
+        phases_counter = 0
+        magnitudeMix = 0
+        phaseMix = 0
+
+        return magChanged, phases_counter, magnitudeMix, phaseMix
