@@ -8,25 +8,26 @@ class OutputPortController():
         self.output_port = output_port
 
     def change_mixer(self):
+        root = self.output_port
         index = -1
         for i in range(4):
-            if self.output_port.main_window.image_obejcts[i].imgPath:
+            if root.main_window.image_obejcts[i].imgPath:
                 index = i
         if index == -1:
             return
-        original_x1 = self.output_port.main_window.viewports[index].ft_viewer.ft_roi.sceneBoundingRect().x()
-        original_x2 = self.output_port.main_window.viewports[index].ft_viewer.ft_roi.sceneBoundingRect().width() + original_x1
-        original_y1 = self.output_port.main_window.viewports[index].ft_viewer.ft_roi.sceneBoundingRect().y()
-        original_y2 = self.output_port.main_window.viewports[index].ft_viewer.ft_roi.sceneBoundingRect().height() + original_y1
+        original_x1 = root.main_window.viewports[index].ft_viewer.ft_roi.sceneBoundingRect().x()
+        original_x2 = root.main_window.viewports[index].ft_viewer.ft_roi.sceneBoundingRect().width() + original_x1
+        original_y1 = root.main_window.viewports[index].ft_viewer.ft_roi.sceneBoundingRect().y()
+        original_y2 = root.main_window.viewports[index].ft_viewer.ft_roi.sceneBoundingRect().height() + original_y1
 
         # Map the scene points to the image's local space
         scene_point = QPointF(original_x1, original_y1)
-        image_point = self.output_port.main_window.viewports[index].ft_viewer.imageItem.mapFromScene(scene_point)
+        image_point = root.main_window.viewports[index].ft_viewer.imageItem.mapFromScene(scene_point)
 
         scene_point2 = QPointF(original_x2, original_y2)
-        image_point2 = self.output_port.main_window.viewports[index].ft_viewer.imageItem.mapFromScene(scene_point2)
+        image_point2 = root.main_window.viewports[index].ft_viewer.imageItem.mapFromScene(scene_point2)
 
-        mask_shape = np.shape(self.output_port.main_window.viewports[index].image_object.editedimgByte)
+        mask_shape = np.shape(root.main_window.viewports[index].image_object.editedimgByte)
         mask_width,mask_height = mask_shape
 
         clamped_x1 = min(max(int(image_point.x()), 0), mask_width - 1)
@@ -35,26 +36,25 @@ class OutputPortController():
         clamped_x2 = min(max(int(image_point2.x()), 0), mask_width - 1)
         clamped_y2 = min(max(int(image_point2.y()), 0), mask_height - 1)
         
-        # window = self.output_port.main_window.viewports[index].ft_viewer
-        if self.output_port.inner_region_mode_radio_button.isChecked():
-            mask = np.zeros(np.shape(self.output_port.main_window.viewports[index].image_object.editedimgByte))
+        if root.inner_region_mode_radio_button.isChecked():
+            mask = np.zeros(np.shape(root.main_window.viewports[index].image_object.editedimgByte))
             mask[ clamped_x1:clamped_x2 + 1,clamped_y1:clamped_y2 + 1] = 1
         else:    
-            mask = np.ones(np.shape(self.output_port.main_window.viewports[index].image_object.editedimgByte))
+            mask = np.ones(np.shape(root.main_window.viewports[index].image_object.editedimgByte))
             mask[ clamped_x1:clamped_x2 + 1,clamped_y1:clamped_y2 + 1] = 0
-        if self.output_port.magnitude_and_phase_radio.isChecked():
+        if root.magnitude_and_phase_radio.isChecked():
             magChanged, phases_counter, magnitudeMix, phaseMix = self.magnitude_and_phase_initializations()
             for i in range(4):
-                if self.output_port.main_window.viewports[i].image_object.imgPath:
-                    if self.output_port.components[i].component_combobox.currentText() == "Magnitude":
-                        mag = self.output_port.components[i].component_slider.value()
+                if root.main_window.viewports[i].image_object.imgPath:
+                    if root.components[i].component_combobox.currentText() == "Magnitude":
+                        mag = root.components[i].component_slider.value()
                         if mag != 0:
                             magChanged = True
-                        magnitudeMix += mag / 100 * self.output_port.main_window.viewports[i].image_object.get_magnitude()
+                        magnitudeMix += mag / 100 * root.main_window.viewports[i].image_object.get_magnitude()
                     else :
-                        if self.output_port.components[i].component_slider.value() > 0:
+                        if root.components[i].component_slider.value() > 0:
                             phases_counter += 1
-                        phaseMix += self.output_port.components[i].component_slider.value() / 100 * self.output_port.main_window.viewports[i].image_object.get_phase()
+                        phaseMix += root.components[i].component_slider.value() / 100 * root.main_window.viewports[i].image_object.get_phase()
             if not magChanged:
                 magnitudeMix = mask
             if phases_counter != 0:
@@ -64,15 +64,15 @@ class OutputPortController():
             realMix = 0
             imaginaryMix = 0
             for i in range(4):
-                if self.output_port.main_window.viewports[i].image_object.imgPath:
-                    if self.output_port.components[i].component_combobox.currentText() == "Real":
-                        realMix += self.output_port.components[i].component_slider.value() / 100 * self.output_port.main_window.viewports[i].image_object.get_real()
+                if root.main_window.viewports[i].image_object.imgPath:
+                    if root.components[i].component_combobox.currentText() == "Real":
+                        realMix += root.components[i].component_slider.value() / 100 * root.main_window.viewports[i].image_object.get_real()
                     else :
-                        imaginaryMix += self.output_port.components[i].component_slider.value() / 100 * self.output_port.main_window.viewports[i].image_object.get_imaginary()
+                        imaginaryMix += root.components[i].component_slider.value() / 100 * root.main_window.viewports[i].image_object.get_imaginary()
             result =  (realMix*mask)+(imaginaryMix*mask)*1j
         
-        output = self.output_port.main_window.viewports[i].image_object.calculateIFFT(result) 
-        self.output_port.output_viwer.setImage(output)
+        output = root.main_window.viewports[i].image_object.calculateIFFT(result) 
+        root.output_viwer.setImage(output)
 
     def set_to_real_and_Imaginary(self, checked):
         if checked:
