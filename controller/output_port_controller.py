@@ -36,12 +36,7 @@ class OutputPortController():
         clamped_x2 = min(max(int(image_point2.x()), 0), mask_width - 1)
         clamped_y2 = min(max(int(image_point2.y()), 0), mask_height - 1)
         
-        if root.inner_region_mode_radio_button.isChecked():
-            mask = np.zeros(np.shape(root.main_window.viewports[index].image_object.editedimgByte))
-            mask[ clamped_x1:clamped_x2 + 1,clamped_y1:clamped_y2 + 1] = 1
-        else:    
-            mask = np.ones(np.shape(root.main_window.viewports[index].image_object.editedimgByte))
-            mask[ clamped_x1:clamped_x2 + 1,clamped_y1:clamped_y2 + 1] = 0
+        mask = self.creating_mask(root, index, clamped_x1, clamped_y1, clamped_x2, clamped_y2)
         if root.magnitude_and_phase_radio.isChecked():
             magChanged, phases_counter, magnitudeMix, phaseMix = self.magnitude_and_phase_initializations()
             for i in range(4):
@@ -92,6 +87,16 @@ class OutputPortController():
 
     def roi_changed(self):
         self.change_mixer()
+
+    def creating_mask(self, root, index, x1, y1, x2, y2):
+        if root.inner_region_mode_radio_button.isChecked():
+            mask = np.zeros(np.shape(root.main_window.viewports[index].image_object.editedimgByte))
+            mask[ x1: x2 + 1, y1: y2 + 1] = 1
+        else:    
+            mask = np.ones(np.shape(root.main_window.viewports[index].image_object.editedimgByte))
+            mask[ x1: x2 + 1, y1: y2 + 1] = 0
+
+        return mask
 
     def magnitude_and_phase_initializations(self):
         magChanged = False
